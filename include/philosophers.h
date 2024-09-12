@@ -6,11 +6,11 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/08/13 19:43:24 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/09 01:51:24 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSPHERS_H
+#ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
 # include <stdio.h>
@@ -21,6 +21,13 @@
 # include <pthread.h>
 # include <time.h>
 # include <sys/wait.h>
+# include <limits.h>
+# include <errno.h>
+# include <time.h>
+# include <sys/time.h>
+
+# define SUCCESS 0
+# define ERROR 1
 
 typedef enum e_action
 {
@@ -29,13 +36,66 @@ typedef enum e_action
 	THINKING
 }	t_action;
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+//                                       STRUCT                                            //
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
 typedef struct		s_philo
 {
-	int				id;
-	unsigned long	*p_thread;
-	t_action		acting;
+	pthread_t		tid;
+	unsigned long	id;
 	struct s_philo	*next;
 	struct s_philo	*prev;
 }					t_philo;
+
+typedef struct	s_time
+{
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+}					t_time;
+
+typedef struct	s_data
+{
+	t_philo			*thread;
+	t_time			time;
+	unsigned long	ms;
+}					t_data;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//                                      PARSING                                            //
+////////////////////////////////////////////////////////////////////////////////////////////
+
+int				parsing(int ac, char **av, t_data *param);
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//                                      MONITOR                                            //
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void			*monitor();
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//                                      THREADS                                            //
+////////////////////////////////////////////////////////////////////////////////////////////
+
+void			*routine();
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//                                       UTILS                                             //
+////////////////////////////////////////////////////////////////////////////////////////////
+
+int				ft_atoi(const char *nptr);
+bool			atoi_overflow(char *strs);
+t_philo			*new_philo(void);
+void			add_philo(t_philo **alst, t_philo *new);
+void			free_s_philo(t_philo **lst);
+size_t 			ft_strlen(char *s);
+int				ft_putstr_fd(char *s, int fd);
+bool			ft_is_digit(char *split);
 
 # endif
