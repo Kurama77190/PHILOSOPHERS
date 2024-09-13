@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_s_philo.c                                     :+:      :+:    :+:   */
+/*   end_prog.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/31 14:49:55 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/13 05:49:59 by sben-tay         ###   ########.fr       */
+/*   Created: 2024/09/13 05:34:33 by sben-tay          #+#    #+#             */
+/*   Updated: 2024/09/13 05:49:12 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	free_s_philo(t_philo **lst)
+void	end_prog(t_data *param, bool exit_code)
 {
-	t_philo			*current;
-	t_philo			*next;
-
-	current = *lst;
-	if (*lst == NULL)
-		return ;
-	while (current->next != *lst)
-	{
-		next = current->next;
-		
-		free(current);
-		current = next;
-	}
-	free(current);
-	*lst = NULL;
+	free_s_philo(&param->thread->head);
+	param->thread->head = NULL;
+	free(param->thread);
+	param->thread = NULL;
+	exit(exit_code);
 }

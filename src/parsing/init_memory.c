@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_s_philo.c                                     :+:      :+:    :+:   */
+/*   init_memory.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/31 14:49:55 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/13 05:49:59 by sben-tay         ###   ########.fr       */
+/*   Created: 2024/09/13 05:32:10 by sben-tay          #+#    #+#             */
+/*   Updated: 2024/09/13 05:32:21 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	free_s_philo(t_philo **lst)
+int	init_memory(t_data *param)
 {
-	t_philo			*current;
-	t_philo			*next;
-
-	current = *lst;
-	if (*lst == NULL)
-		return ;
-	while (current->next != *lst)
+	param->time = (t_time){};
+	param->thread = malloc(sizeof(t_philoControl));
+	if (!param->thread)
 	{
-		next = current->next;
-		
-		free(current);
-		current = next;
+		ft_putstr_fd("Error initializing memory.\n", 2);
+		return (ERROR);
 	}
-	free(current);
-	*lst = NULL;
+	param->thread->head = NULL;
+	return (SUCCESS);
 }

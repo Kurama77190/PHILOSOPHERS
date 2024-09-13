@@ -6,7 +6,7 @@
 #    By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 16:20:32 by sben-tay          #+#    #+#              #
-#    Updated: 2024/09/09 01:28:40 by sben-tay         ###   ########.fr        #
+#    Updated: 2024/09/13 05:43:59 by sben-tay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ BUILD = builder/
 SRC = src/main.c \
 	$(UTILS)ft_atoi.c $(UTILS)add_philo.c $(UTILS)free_s_philo.c $(UTILS)atoi_overflow.c \
 	$(UTILS)new_philo.c $(UTILS)ft_strlen.c $(UTILS)ft_putstr_fd.c $(UTILS)ft_is_digit.c \
-	$(PARS)parsing.c
+	$(UTILS)end_prog.c \
+	$(PARS)parsing.c $(PARS)init_memory.c
 
 $(shell mkdir -p $(BUILD))
 

@@ -6,18 +6,16 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:05:44 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/09 01:32:55 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/13 05:53:20 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "philosophers.h"
 
 #include "philosophers.h"
 
 static int	check_digit(char **av);
 static int	check_overflow(char **av);
 static int	check_negatif(char **av);
-static int	setup_threads(t_philo **param, char *arg_thread);
+static int	setup_threads(t_philoControl **param, char *arg_thread);
 
 int	parsing(int ac, char **av, t_data *param)
 {
@@ -35,11 +33,12 @@ int	parsing(int ac, char **av, t_data *param)
 		return (ERROR);
 	if (check_negatif(av) == ERROR)
 		return (ERROR);
+	// setup_monitors;
 	setup_threads(&param->thread, av[1]);
 	param->time.time_to_die = (size_t)ft_atoi(av[2]);
 	param->time.time_to_eat = (size_t)ft_atoi(av[3]);
 	param->time.time_to_sleep = (size_t)ft_atoi(av[4]);
-	
+	//timestamp
 	return (SUCCESS);
 }
 
@@ -113,7 +112,7 @@ static int	check_negatif(char **av)
 	return (SUCCESS);
 }
 
-static int	setup_threads(t_philo **param, char *arg_thread)
+static int	setup_threads(t_philoControl **param, char *arg_thread)
 {
 	int		i;
 	int		nb_philo;
@@ -123,11 +122,13 @@ static int	setup_threads(t_philo **param, char *arg_thread)
 	nb_philo = ft_atoi(arg_thread);
 	while (i < nb_philo)
 	{
+		(*param)->n_thread = (i + 1);
 		new = new_philo();
 		if (!new)
-			return (free_s_philo(param), ERROR);
-		add_philo(param, new);
+			return (free_s_philo(&(*param)->head), ERROR);
+		add_philo(&(*param)->head, new);
 		i++;
 	}
+	(*param)->current = (*param)->head;
 	return (SUCCESS);
 }

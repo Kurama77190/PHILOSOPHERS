@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/09 01:51:24 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/13 05:43:46 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef enum e_action
 //                                       STRUCT                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-
 typedef struct		s_philo
 {
 	pthread_t		tid;
@@ -49,18 +48,25 @@ typedef struct		s_philo
 	struct s_philo	*prev;
 }					t_philo;
 
+typedef struct		s_PhiloListController
+{
+	t_philo			*head;
+	t_philo			*current;
+	size_t			n_thread;
+}					t_philoControl;
+
 typedef struct	s_time
 {
 	size_t			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
+	size_t			timestamp;
 }					t_time;
 
 typedef struct	s_data
 {
-	t_philo			*thread;
+	t_philoControl	*thread;
 	t_time			time;
-	unsigned long	ms;
 }					t_data;
 
 
@@ -69,12 +75,11 @@ typedef struct	s_data
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 int				parsing(int ac, char **av, t_data *param);
-
+int				init_memory(t_data *param);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                      MONITOR                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////
-
 
 void			*monitor();
 
@@ -83,7 +88,6 @@ void			*monitor();
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 void			*routine();
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                       UTILS                                             //
@@ -97,5 +101,7 @@ void			free_s_philo(t_philo **lst);
 size_t 			ft_strlen(char *s);
 int				ft_putstr_fd(char *s, int fd);
 bool			ft_is_digit(char *split);
+void			end_prog(t_data *param, bool exit_code);
+
 
 # endif

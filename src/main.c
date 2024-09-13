@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:36:12 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/09 02:12:42 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/13 05:52:04 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,16 @@ int main(int ac, char **av)
 {
 	t_data	param;
 
-	param = (t_data){};
-	if (parsing(ac, av, &param) == ERROR)
+	if (init_memory(&param) == ERROR)
+	{
 		return (1);
-
-	free_s_philo(&param.thread);
+	}
+	if (parsing(ac, av, &param) == ERROR)
+	{
+		end_prog(&param, EXIT_FAILURE);
+	}
+	// algo philosophers
+	end_prog(&param, EXIT_SUCCESS);
 }
 
 // int main(void)
