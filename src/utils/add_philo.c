@@ -6,34 +6,30 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 14:41:06 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/13 05:48:36 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/13 18:54:45 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	add_philo(t_philo **head, t_philo *new)
+void	add_philo(t_philoControl *lst, t_philo *new)
 {
-	t_philo			*first;
-	t_philo			*last;
+	t_philo	*tmp;
 
-	last = *head;
-	if (new == NULL)
-		return ;
-	if (*head == NULL)
+	if (lst->size)
+	{
+		tmp = lst->head;
+		tmp->prev->next = new;
+		new->prev = tmp->prev;
+		tmp->prev = new;
+		new->next = tmp;
+		lst->size++;
+	}
+	else
 	{
 		new->next = new;
 		new->prev = new;
-		new->id = 1;
-		*head = new;
-		return ;
+		lst->head = new;
+		lst->size++;
 	}
-	first = *head;
-	last = (*head)->prev;
-
-	new->id = last->id + 1;
-	new->next = first;
-	new->prev = last;
-	last->next = new;
-	first->prev = new;
 }

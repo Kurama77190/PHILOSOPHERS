@@ -6,27 +6,23 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 14:49:55 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/13 05:49:59 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:06:35 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	free_s_philo(t_philo **lst)
+void	free_s_philo(t_philoControl *lst)
 {
-	t_philo			*current;
-	t_philo			*next;
+	void			*next;
 
-	current = *lst;
-	if (*lst == NULL)
-		return ;
-	while (current->next != *lst)
+	while (lst->size > 1)
 	{
-		next = current->next;
-		
-		free(current);
-		current = next;
+		next = lst->head->next;
+		free(lst->head);
+		lst->head = next;
+		lst->size--;
 	}
-	free(current);
-	*lst = NULL;
+	free(lst->head);
+	lst->head = NULL;
 }

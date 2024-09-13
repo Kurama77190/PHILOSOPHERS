@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:05:44 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/13 05:53:20 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/13 19:18:37 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 static int	check_digit(char **av);
 static int	check_overflow(char **av);
-static int	check_negatif(char **av);
-static int	setup_threads(t_philoControl **param, char *arg_thread);
+static int	setup_threads(t_data *param);
 
 int	parsing(int ac, char **av, t_data *param)
 {
+	pthread_mutex_init(param->rtg, NULL);
 	if (ac > 5 || ac < 5)
 	{
 		return (ft_putstr_fd("Error numbers arguments.\n", 2), ERROR);
@@ -31,17 +31,22 @@ int	parsing(int ac, char **av, t_data *param)
 		return (ERROR);
 	if (check_overflow(av) == ERROR)
 		return (ERROR);
-	if (check_negatif(av) == ERROR)
-		return (ERROR);
-	// setup_monitors;
-	setup_threads(&param->thread, av[1]);
+	param->thread.n_thread = ft_atoi(av[1]);
+	setup_threads(param);
+	rtg(param);
 	param->time.time_to_die = (size_t)ft_atoi(av[2]);
 	param->time.time_to_eat = (size_t)ft_atoi(av[3]);
 	param->time.time_to_sleep = (size_t)ft_atoi(av[4]);
 	//timestamp
 	return (SUCCESS);
 }
-
+static void	rtg(t_data *param)
+{
+	param->starttime = gettime();
+	pthread_mutex_lock(param->start);
+	param->rtg = 1;
+	pthread_mutex_unlock(param->start);
+}
 static int	check_digit(char **av)
 {
 	if (!ft_is_digit(av[1]))
@@ -84,51 +89,20 @@ static int	check_overflow(char **av)
 	return (SUCCESS);
 }
 
-static int	check_negatif(char **av)
-{
-	int	nb_thread;
-	int time_die;
-	int time_eat;
-	int time_sleep;
-
-	nb_thread = ft_atoi(av[1]);
-	time_die = ft_atoi(av[2]);
-	time_eat = ft_atoi(av[3]);
-	time_sleep = ft_atoi(av[4]);
-	if (nb_thread < 0)
-		return (ft_putstr_fd("number_philo is negatif.\n", 2), ERROR);
-	if (time_die < 0)
-	{
-		return (ft_putstr_fd("time_to_die is negatif.\n", 2), ERROR);
-	}
-	if (time_eat < 0)
-	{
-		return (ft_putstr_fd("time_to_eat is negatif.\n", 2), ERROR);
-	}
-	if (time_sleep < 0)
-	{
-		return (ft_putstr_fd("time_to_sleep is negatif.\n", 2), ERROR);
-	}
-	return (SUCCESS);
-}
-
-static int	setup_threads(t_philoControl **param, char *arg_thread)
+static int	setup_threads(t_data *param)
 {
 	int		i;
-	int		nb_philo;
 	t_philo	*new;
 
 	i = 0;
-	nb_philo = ft_atoi(arg_thread);
-	while (i < nb_philo)
+	while ((size_t) i < param->thread.n_thread)
 	{
-		(*param)->n_thread = (i + 1);
-		new = new_philo();
+		new = new_philo(i + 1);
 		if (!new)
-			return (free_s_philo(&(*param)->head), ERROR);
-		add_philo(&(*param)->head, new);
+			return (free_s_philo(&param->thread), ERROR);
+		add_philo(&param->thread, new);
 		i++;
 	}
-	(*param)->current = (*param)->head;
+	param->thread.current = param->thread.head;
 	return (SUCCESS);
 }

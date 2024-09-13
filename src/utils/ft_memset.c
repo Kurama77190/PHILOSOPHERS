@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_memory.c                                      :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/13 05:32:10 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/13 05:32:21 by sben-tay         ###   ########.fr       */
+/*   Created: 2024/09/13 18:18:57 by sben-tay          #+#    #+#             */
+/*   Updated: 2024/09/13 18:19:04 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	init_memory(t_data *param)
+void	*ft_memset(void *b, int c, size_t len)
 {
-	param->time = (t_time){};
-	param->thread = malloc(sizeof(t_philoControl));
-	if (!param->thread)
+	unsigned char	*str;
+	size_t			i;
+
+	i = 0;
+	str = b;
+	while (i < len)
 	{
-		ft_putstr_fd("Error initializing memory.\n", 2);
-		return (ERROR);
+		str[i] = c;
+		i++;
 	}
-	param->thread->head = NULL;
-	return (SUCCESS);
+	return (b);
 }
