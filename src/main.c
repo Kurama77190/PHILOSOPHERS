@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:36:12 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/13 19:16:50 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/16 17:44:23 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,17 @@
 
 long int	get_ms(void);
 
-static	void wait_for_everyone(t_data *param)
-{
-	bool start;
 
-	start = 0;
-	while (!start)
-	{
-		pthread_mutex_lock(param->start);
-		if (param->rtg)
-			start = 1;
-		pthread_mutex_unlock(param->start);
-		usleep(20);
-	}
-}
 void	*routine(void *param1)
 {
 	t_data	*param;
 	
 	param = (t_data *) param1;
-	wait_for_everyone(&param)
 	printf("%sTest from threads[%ld].%s\n", YELLOW, get_ms(), NC);
 	return (NULL);
 }
 
-long int	get_ms(void)
+long int get_ms(void)
 {
 	struct timeval tv;
 
@@ -61,10 +47,10 @@ int main(int ac, char **av)
 	ft_memset(&param, 0, sizeof(t_data));// a ajouter
 	if (parsing(ac, av, &param) == ERROR)
 	{
-		end_prog(&param, EXIT_FAILURE);
+		end_prog(&param, NULL, EXIT_FAILURE);
 	}
 	// algo philosophers
-	end_prog(&param, EXIT_SUCCESS);
+	end_prog(&param, NULL, EXIT_SUCCESS);
 }
 
 

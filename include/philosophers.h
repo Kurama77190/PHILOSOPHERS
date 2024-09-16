@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/13 19:18:42 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/16 19:28:32 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,14 @@ typedef struct		s_philo
 {
 	pthread_t		tid;
 	unsigned long	id;
-	
+	pthread_mutex_t	left;
+	pthread_mutex_t	right;
+
 	struct s_philo	*next;
 	struct s_philo	*prev;
 }					t_philo;
 
-typedef struct		s_PhiloListController
+typedef struct s_philoControl
 {
 	t_philo			*head;
 	t_philo			*current;
@@ -66,14 +68,18 @@ typedef struct	s_time
 	
 }					t_time;
 
+typedef struct s_fork
+{
+	pthread_mutex_t	*fork;
+	int				size;
+	int				index;
+}					t_fork;
+
 typedef struct	s_data
 {
 	t_philoControl	thread;
 	t_time			time;
-	int32_t			starttime;
-	pthread_mutex_t *start;
-	bool			rtg;
-	// array mutex = nb_thread
+	t_fork			mutex;
 }					t_data;
 
 
@@ -102,13 +108,13 @@ void			*routine();
 
 int				ft_atoi(const char *nptr);
 bool			atoi_overflow(char *strs);
-t_philo			*new_philo(int);
+t_philo			*new_philo(int nb, t_data *param);
 void			add_philo(t_philoControl *lst, t_philo *new);
 void			free_s_philo(t_philoControl *lst);
 size_t 			ft_strlen(char *s);
 int				ft_putstr_fd(char *s, int fd);
 bool			ft_is_digit(char *split);
-void			end_prog(t_data *param, bool exit_code);
+void			end_prog(t_data *param, char *stderr, int exit_code);
 void			*ft_memset(void *b, int c, size_t len);
 
 

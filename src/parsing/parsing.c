@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:05:44 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/13 19:18:37 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/16 19:23:10 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 static int	check_digit(char **av);
 static int	check_overflow(char **av);
 static int	setup_threads(t_data *param);
+static int	setup_fork(t_data *param);
 
 int	parsing(int ac, char **av, t_data *param)
 {
-	pthread_mutex_init(param->rtg, NULL);
 	if (ac > 5 || ac < 5)
 	{
 		return (ft_putstr_fd("Error numbers arguments.\n", 2), ERROR);
@@ -32,21 +32,18 @@ int	parsing(int ac, char **av, t_data *param)
 	if (check_overflow(av) == ERROR)
 		return (ERROR);
 	param->thread.n_thread = ft_atoi(av[1]);
-	setup_threads(param);
-	rtg(param);
+	param->mutex.size = ft_atoi(av[1]);
+	if (setup_fork(param) == ERROR)
+		return (ERROR);
+	if (setup_threads(param) == ERROR)
+		return (ERROR);
 	param->time.time_to_die = (size_t)ft_atoi(av[2]);
 	param->time.time_to_eat = (size_t)ft_atoi(av[3]);
 	param->time.time_to_sleep = (size_t)ft_atoi(av[4]);
 	//timestamp
 	return (SUCCESS);
 }
-static void	rtg(t_data *param)
-{
-	param->starttime = gettime();
-	pthread_mutex_lock(param->start);
-	param->rtg = 1;
-	pthread_mutex_unlock(param->start);
-}
+
 static int	check_digit(char **av)
 {
 	if (!ft_is_digit(av[1]))
@@ -89,6 +86,20 @@ static int	check_overflow(char **av)
 	return (SUCCESS);
 }
 
+static int	setup_fork(t_data *param)
+{
+	size_t	size;
+
+	size = param->mutex.size;
+	param->mutex.fork = malloc(sizeof(pthread_mutex_t) * size);
+	if (param->mutex.fork == NULL)
+	{
+		ft_putstr_fd("Error alocation fork.\n", 2);
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
 static int	setup_threads(t_data *param)
 {
 	int		i;
@@ -97,7 +108,7 @@ static int	setup_threads(t_data *param)
 	i = 0;
 	while ((size_t) i < param->thread.n_thread)
 	{
-		new = new_philo(i + 1);
+		new = new_philo(i + 1, param);
 		if (!new)
 			return (free_s_philo(&param->thread), ERROR);
 		add_philo(&param->thread, new);
