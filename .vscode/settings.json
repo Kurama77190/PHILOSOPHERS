@@ -1,6 +1,11 @@
 {
 	"files.associations": {
 		"unistd.h": "c",
-		"philosophers.h": "c"
+		"philosophers.h": "c",
+		"array": "c",
+		"string_view": "c",
+		"initializer_list": "c",
+		"utility": "c",
+		"limits.h": "c"
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/16 19:28:32 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/18 02:33:57 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ typedef struct		s_philo
 {
 	pthread_t		tid;
 	unsigned long	id;
-	pthread_mutex_t	left;
-	pthread_mutex_t	right;
-
+	pthread_mutex_t	*left;
+	pthread_mutex_t	*right;
+	long			last_meal_time;
 	struct s_philo	*next;
 	struct s_philo	*prev;
 }					t_philo;
@@ -65,15 +65,19 @@ typedef struct	s_time
 	size_t			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
-	
 }					t_time;
 
 typedef struct s_fork
 {
 	pthread_mutex_t	*fork;
-	int				size;
-	int				index;
 }					t_fork;
+
+typedef struct s_sync
+{
+    pthread_mutex_t	start_mutex;
+    pthread_cond_t	start_cond;
+    int 			start_signal;
+}					t_sync;
 
 typedef struct	s_data
 {
@@ -88,7 +92,6 @@ typedef struct	s_data
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 int				parsing(int ac, char **av, t_data *param);
-int				init_memory(t_data *param);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                      MONITOR                                            //
@@ -108,7 +111,7 @@ void			*routine();
 
 int				ft_atoi(const char *nptr);
 bool			atoi_overflow(char *strs);
-t_philo			*new_philo(int nb, t_data *param);
+t_philo			*new_philo(int nb);
 void			add_philo(t_philoControl *lst, t_philo *new);
 void			free_s_philo(t_philoControl *lst);
 size_t 			ft_strlen(char *s);
