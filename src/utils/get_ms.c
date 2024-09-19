@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_philo.c                                        :+:      :+:    :+:   */
+/*   get_ms.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/31 15:25:53 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/19 18:17:17 by sben-tay         ###   ########.fr       */
+/*   Created: 2024/09/19 18:00:23 by sben-tay          #+#    #+#             */
+/*   Updated: 2024/09/19 18:01:12 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-t_philo	*new_philo(int id, t_data *param)
+long int get_ms(void)
 {
-	t_philo	*new;
+	struct timeval tv;
 
-	new = malloc(sizeof(t_philo));
-	if (!new)
-		return (NULL);
-	if (pthread_create(&new->tid, NULL, &routine, param))
-		return (NULL);
-	new->id = id;
-	new->next = NULL;
-	new->prev = NULL;
-	new->right = NULL;
-	new->left = NULL;
-	new->last_meal_time = 0;
-	return (new);
+	if (gettimeofday(&tv, NULL) == -1)
+	{
+		perror("Error timeval");
+		return (-1);
+	}
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }

@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_philo.c                                        :+:      :+:    :+:   */
+/*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/31 15:25:53 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/19 18:17:17 by sben-tay         ###   ########.fr       */
+/*   Created: 2024/09/19 18:02:07 by sben-tay          #+#    #+#             */
+/*   Updated: 2024/09/19 18:23:02 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-t_philo	*new_philo(int id, t_data *param)
-{
-	t_philo	*new;
+# define NC "\e[0m"
+# define YELLOW "\e[1;33m"
 
-	new = malloc(sizeof(t_philo));
-	if (!new)
-		return (NULL);
-	if (pthread_create(&new->tid, NULL, &routine, param))
-		return (NULL);
-	new->id = id;
-	new->next = NULL;
-	new->prev = NULL;
-	new->right = NULL;
-	new->left = NULL;
-	new->last_meal_time = 0;
-	return (new);
+void	*monitor(void *param)
+{
+	
+	t_data *data = (t_data *)param;
+	while(data->)
+	{
+		
+	}
+	printf("%sTest from threads[%ld].%s\n", YELLOW, get_ms(), NC);
+	return (NULL);
 }

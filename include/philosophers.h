@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/18 02:33:57 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/19 18:20:21 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ typedef struct s_fork
 typedef struct s_sync
 {
     pthread_mutex_t	start_mutex;
-    pthread_cond_t	start_cond;
     int 			start_signal;
 }					t_sync;
 
@@ -84,6 +83,7 @@ typedef struct	s_data
 	t_philoControl	thread;
 	t_time			time;
 	t_fork			mutex;
+	t_sync			sync;
 }					t_data;
 
 
@@ -92,6 +92,10 @@ typedef struct	s_data
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 int				parsing(int ac, char **av, t_data *param);
+int				check_digit(char **av);
+int				check_overflow(char **av);
+int				setup_fork(t_data *param);
+int				setup_threads(t_data *param);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                      MONITOR                                            //
@@ -111,7 +115,7 @@ void			*routine();
 
 int				ft_atoi(const char *nptr);
 bool			atoi_overflow(char *strs);
-t_philo			*new_philo(int nb);
+t_philo			*new_philo(int nb, t_data *param);
 void			add_philo(t_philoControl *lst, t_philo *new);
 void			free_s_philo(t_philoControl *lst);
 size_t 			ft_strlen(char *s);
@@ -119,7 +123,14 @@ int				ft_putstr_fd(char *s, int fd);
 bool			ft_is_digit(char *split);
 void			end_prog(t_data *param, char *stderr, int exit_code);
 void			*ft_memset(void *b, int c, size_t len);
+void			free_s_fork(t_fork	*param);
+long int		get_ms(void);
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+//                                       DEBUG                                             //
+////////////////////////////////////////////////////////////////////////////////////////////
+
+void 			check_philosophers(t_philo *head, int num_philos);
 
 
 # endif
