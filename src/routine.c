@@ -17,21 +17,20 @@
 
 void	*routine(void	*param)
 {
-	t_data *data = (t_data *)param;
+	t_philo *data = param;
 
-	pthread_mutex_lock(&data->sync.routines_fork);
-	while(!data->sync.start_signal)
+	while(!data->sync->start_signal)
 	{
-		printf("%d bool\n", data->sync.start_signal);
+		pthread_mutex_lock(&data->sync->routines_fork);
 		usleep(100);
+		pthread_mutex_unlock(&data->sync->routines_fork);
 	}
-	pthread_mutex_unlock(&data->sync.routines_fork);
 	while(1)
 	{
-		pthread_mutex_lock(&data->sync.routines_fork);
+		pthread_mutex_lock(&data->sync->routines_fork);
 		printf("%sTest from threads[%ld].%s\n", YELLOW, get_ms(), NC);
-		pthread_mutex_unlock(&data->sync.routines_fork);
-		if (!data->sync.start_signal)
+		pthread_mutex_unlock(&data->sync->routines_fork);
+		if (!data->sync->start_signal)
 		{
 			break ;
 		}

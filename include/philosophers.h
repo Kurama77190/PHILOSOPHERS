@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/20 03:44:42 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/20 19:03:36 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct		s_philo
 	long			last_meal_time;
 	long			last_get_ms;
 	bool			dead;
+	struct s_sync	*sync;
 	struct s_philo	*next;
 	struct s_philo	*prev;
 }					t_philo;
@@ -78,14 +79,14 @@ typedef struct s_fork
 typedef struct s_sync
 {
     pthread_mutex_t	routines_fork;
-    bool 			start_signal;
+    volatile bool 	start_signal;
 }					t_sync;
 
 typedef	struct s_monitor
 {
 	pthread_t		monitor_thread;
 	pthread_mutex_t	monitors_fork;
-	bool			start_signal;
+	volatile bool	start_signal;
 }					t_monitor;
 
 typedef struct	s_data
@@ -108,6 +109,8 @@ int				check_overflow(char **av);
 int				setup_fork(t_data *param);
 int				init_fork(t_data *param, size_t nb_fork);
 int				setup_threads(t_data *param);
+int				create_philo(t_data *param);
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                      MONITOR                                            //

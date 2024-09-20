@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:07:54 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/20 04:40:42 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/20 19:55:55 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,20 +63,21 @@ int	init_fork(t_data *param, size_t nb_fork)
 	{
 		if (pthread_mutex_init(&param->mutex.fork[i], NULL) != 0)
 		{
-			ft_putstr_fd("Error initializing fork mutex.\n", 2);
+			ft_putstr_fd("Error initializing mutex philo.\n", 2);
 			return (ERROR);
 		}
 		i++;
 	}
 	if (pthread_mutex_init(&param->sync.routines_fork, NULL) != 0)
 	{
-		ft_putstr_fd("Error initializing fork mutex.\n", 2);
+		ft_putstr_fd("Error initializing mutex routine.\n", 2);
 		return (ERROR);
 	}
-	pthread_mutex_lock(&param->sync.routines_fork);
-	param->monitor.start_signal = true;
-	param->sync.start_signal = true;
-	pthread_mutex_unlock(&param->sync.routines_fork);
+	if (pthread_mutex_init(&param->sync.routines_fork, NULL) != 0)
+	{
+		ft_putstr_fd("Error initializing mutex monitor.\n", 2);
+		return (ERROR);
+	}
 	return (SUCCESS);
 }
 
@@ -92,6 +93,8 @@ int	setup_fork(t_data *param)
 		ft_putstr_fd("Error alocation fork.\n", 2);
 		return (ERROR);
 	}
+	if (init_fork(param, param->mutex.size) == ERROR)
+		return (ERROR);
 	current = param->thread.head;
 	i = 0;
 	while (i < param->mutex.size)
@@ -101,8 +104,6 @@ int	setup_fork(t_data *param)
 		current = current->next;
 		i++;
 	}
-	if (init_fork(param, param->mutex.size) == ERROR)
-		return (ERROR);
 	return (SUCCESS);
 }
 
@@ -121,6 +122,5 @@ int	setup_threads(t_data *param)
 		i++;
 	}
 	param->thread.current = param->thread.head;
-	pthread_create(&param->monitor.monitor_thread, NULL, &monitor, param);
 	return (SUCCESS);
 }
