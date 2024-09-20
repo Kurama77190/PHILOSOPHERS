@@ -6,7 +6,7 @@
 #    By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 16:20:32 by sben-tay          #+#    #+#              #
-#    Updated: 2024/09/19 18:12:55 by sben-tay         ###   ########.fr        #
+#    Updated: 2024/09/20 02:20:10 by sben-tay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -100,6 +100,6 @@ fclean: clean # Règles pour nettoyer les fichiers objets et l'exécutable
 
 re: fclean all # Règle pour recompiler
 
-.PHONY: all clean fclean re bonus teste # Pour éviter les conflits avec des fichiers du même nom
+.PHONY: all clean fclean re bonus
 
 -include $(DEP)

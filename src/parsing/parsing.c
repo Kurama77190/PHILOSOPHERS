@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:05:44 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/19 18:12:26 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/20 04:28:26 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	parsing(int ac, char **av, t_data *param)
 		return (ERROR);
 	if (setup_fork(param) == ERROR)
 		return (ERROR);
-	//timestamp
 	return (SUCCESS);
 }
 

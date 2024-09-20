@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
+/*   sync.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 17:59:05 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/19 18:24:01 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/20 03:41:44 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,23 @@
 void	*routine(void	*param)
 {
 	t_data *data = (t_data *)param;
-	
-	// verouillage de mutex start
-	// deverouillage de mutex start
-	printf("%sTest from threads[%ld].%s\n", YELLOW, get_ms(), NC);
+
+	pthread_mutex_lock(&data->sync.routines_fork);
+	while(!data->sync.start_signal)
+	{
+		printf("%d bool\n", data->sync.start_signal);
+		usleep(100);
+	}
+	pthread_mutex_unlock(&data->sync.routines_fork);
+	while(1)
+	{
+		pthread_mutex_lock(&data->sync.routines_fork);
+		printf("%sTest from threads[%ld].%s\n", YELLOW, get_ms(), NC);
+		pthread_mutex_unlock(&data->sync.routines_fork);
+		if (!data->sync.start_signal)
+		{
+			break ;
+		}
+	}
 	return (NULL);
 }

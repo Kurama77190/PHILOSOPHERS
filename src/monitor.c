@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:02:07 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/19 18:23:02 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/20 04:13:54 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,35 @@
 
 void	*monitor(void *param)
 {
-	
-	t_data *data = (t_data *)param;
-	while(data->)
+	t_data *data;
+	t_philo	*current;
+	int		test;
+
+	data = (t_data *)param;
+	current = data->thread.head;
+	test = 0;
+	while(!data->monitor.start_signal)
+		usleep(100);
+	while (current)
 	{
-		
+		usleep(100);
+		if (current->dead)
+		{
+			pthread_mutex_lock(&data->monitor.monitors_fork);
+			printf("[%ld] Philosophers[%ld] is dead\n", get_ms(), current->id);
+			pthread_mutex_unlock(&data->monitor.monitors_fork);
+			end_prog(param, NULL, 0);
+			return (NULL);
+		}
+		if (test >= 200)
+		{
+			break ;
+		}
+		pthread_mutex_lock(&data->monitor.monitors_fork);
+		test++;
+		pthread_mutex_unlock(&data->monitor.monitors_fork);
+		if (!data->monitor.start_signal)
+			break ;
 	}
-	printf("%sTest from threads[%ld].%s\n", YELLOW, get_ms(), NC);
 	return (NULL);
 }
