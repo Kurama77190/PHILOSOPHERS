@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 15:25:53 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/20 19:50:53 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/21 02:36:25 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ t_philo	*new_philo(int id, t_data *param)
 	new->left = NULL;
 	new->last_meal_time = 0;
 	new->sync = &param->sync;
+	new->time = &param->time;
 	return (new);
 }

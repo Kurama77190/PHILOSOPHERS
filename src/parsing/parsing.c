@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 00:05:44 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/20 19:57:23 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/21 03:13:15 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ int	parsing(int ac, char **av, t_data *param)
 	param->time.time_to_sleep = (size_t)ft_atoi(av[4]);
 	if (setup_threads(param) == ERROR)
 		return (ERROR);
-	if (setup_fork(param) == ERROR)
+	if (setup_mutex(param) == ERROR)
 		return (ERROR);
 	if (create_philo(param) == ERROR)
 		return (ERROR);
+	// timestamp;
 	return (SUCCESS);
 }

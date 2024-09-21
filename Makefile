@@ -6,7 +6,7 @@
 #    By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 16:20:32 by sben-tay          #+#    #+#              #
-#    Updated: 2024/09/20 19:03:18 by sben-tay         ###   ########.fr        #
+#    Updated: 2024/09/21 04:06:52 by sben-tay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,9 @@ CPPFLAGS = -I./include -pthread
 UTILS = src/utils/
 PARS  = src/parsing/
 BUILD = builder/
+
+# CFLAGS += -fsanitize=address
+# CFLAGS += -fsanitize=thread
 
 #=================================================__SRC__OF__PROJECT__=============================================================================
 SRC = src/main.c src/routine.c src/monitor.c src/debug.c \

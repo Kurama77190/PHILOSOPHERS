@@ -6,30 +6,55 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:57:27 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/20 19:53:41 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/21 04:08:01 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
+int	setup_threads(t_data *param)
+{
+	int		i;
+	t_philo	*new;
+
+	i = 0;
+	while ((size_t)i < param->thread.n_thread)
+	{
+		new = new_philo(i + 1, param);
+		if (!new)
+			return (free_s_philo(&param->thread), ERROR);
+		add_philo(&param->thread, new);
+		i++;
+	}
+	param->thread.current = param->thread.head;
+	return (SUCCESS);
+}
+
 int	create_philo(t_data *param)
 {
 	int i;
-	t_philo *current_;
+	t_philo *current;
 
 	i = 0;
-	current_ = param->thread.current;
+	current = param->thread.head;
 	while (i < param->thread.size)
 	{
-		if (pthread_create(&current_->tid, NULL, &routine, &current_) != 0)
-			return (ERROR);
-		current_ = current_->next;
+		if (i % 2 == 0)
+		{
+			if (pthread_create(&current->tid, NULL, &routine_a, current) != 0)
+				return (ERROR);			
+		}
+		else
+		{
+			if (pthread_create(&current->tid, NULL, &routine_a, current) != 0)
+				return (ERROR);						
+		}
+		usleep(100);
+		current = current->next;
 		i++;
 	}
-	if (pthread_create(&param->monitor.monitor_thread, NULL, &routine,
-			&param->thread.head) != 0)
-			return (ERROR);
-	param->sync.start_signal = true;
-	param->monitor.start_signal = true;
+	if (pthread_create(&param->monitor.monitor_thread, NULL, &monitor,
+		param) != 0)
+		return (ERROR);
 	return (SUCCESS);
 }

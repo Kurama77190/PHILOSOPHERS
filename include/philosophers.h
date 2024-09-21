@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/20 19:03:36 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/21 04:07:49 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct		s_philo
 	pthread_mutex_t	*right;
 	long			last_meal_time;
 	long			last_get_ms;
-	bool			dead;
+	struct s_time	*time;
 	struct s_sync	*sync;
 	struct s_philo	*next;
 	struct s_philo	*prev;
@@ -65,9 +65,9 @@ typedef struct s_philoControl
 
 typedef struct	s_time
 {
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
 }					t_time;
 
 typedef struct s_fork
@@ -78,15 +78,17 @@ typedef struct s_fork
 
 typedef struct s_sync
 {
-    pthread_mutex_t	routines_fork;
-    volatile bool 	start_signal;
+	pthread_mutex_t	meal_lock;
+	pthread_mutex_t	dead_lock;
+	pthread_mutex_t	write_lock;
+	bool			dead;
+	long			timestamp;
 }					t_sync;
 
 typedef	struct s_monitor
 {
 	pthread_t		monitor_thread;
 	pthread_mutex_t	monitors_fork;
-	volatile bool	start_signal;
 }					t_monitor;
 
 typedef struct	s_data
@@ -106,11 +108,11 @@ typedef struct	s_data
 int				parsing(int ac, char **av, t_data *param);
 int				check_digit(char **av);
 int				check_overflow(char **av);
-int				setup_fork(t_data *param);
-int				init_fork(t_data *param, size_t nb_fork);
+int				setup_mutex(t_data *param);
+int				init_mutex_thread(t_data *param, size_t nb_fork);
 int				setup_threads(t_data *param);
 int				create_philo(t_data *param);
-
+int				init_mutex_routine(t_data *param);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                      MONITOR                                            //
@@ -122,7 +124,8 @@ void			*monitor(void *param);
 //                                      THREADS                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-void			*routine(void *param);
+void			*routine_a(void *arg);
+void			*routine_b(void *arg);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                       UTILS                                             //

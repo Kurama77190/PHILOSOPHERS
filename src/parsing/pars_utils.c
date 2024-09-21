@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:07:54 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/20 19:55:55 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/21 03:14:04 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	check_overflow(char **av)
 	return (SUCCESS);
 }
 
-int	init_fork(t_data *param, size_t nb_fork)
+int	init_mutex_thread(t_data *param, size_t nb_fork)
 {
 	size_t	i;
 
@@ -68,20 +68,30 @@ int	init_fork(t_data *param, size_t nb_fork)
 		}
 		i++;
 	}
-	if (pthread_mutex_init(&param->sync.routines_fork, NULL) != 0)
+	return (SUCCESS);
+}
+
+int	init_mutex_routine(t_data *param)
+{
+	if (pthread_mutex_init(&param->sync.meal_lock, NULL) != 0)
 	{
-		ft_putstr_fd("Error initializing mutex routine.\n", 2);
+		ft_putstr_fd("Error initializing mutex meal.\n", 2);
 		return (ERROR);
 	}
-	if (pthread_mutex_init(&param->sync.routines_fork, NULL) != 0)
+	if (pthread_mutex_init(&param->sync.write_lock, NULL) != 0)
 	{
-		ft_putstr_fd("Error initializing mutex monitor.\n", 2);
+		ft_putstr_fd("Error initializing mutex write.\n", 2);
+		return (ERROR);
+	}
+	if (pthread_mutex_init(&param->sync.dead_lock, NULL) != 0)
+	{
+		ft_putstr_fd("Error initializing mutex write.\n", 2);
 		return (ERROR);
 	}
 	return (SUCCESS);
 }
 
-int	setup_fork(t_data *param)
+int	setup_mutex(t_data *param)
 {
 	t_philo	*current;
 	size_t	i;
@@ -93,7 +103,9 @@ int	setup_fork(t_data *param)
 		ft_putstr_fd("Error alocation fork.\n", 2);
 		return (ERROR);
 	}
-	if (init_fork(param, param->mutex.size) == ERROR)
+	if (init_mutex_thread(param, param->mutex.size) == ERROR)
+		return (ERROR);
+	if (init_mutex_routine(param) == ERROR)
 		return (ERROR);
 	current = param->thread.head;
 	i = 0;
@@ -104,23 +116,5 @@ int	setup_fork(t_data *param)
 		current = current->next;
 		i++;
 	}
-	return (SUCCESS);
-}
-
-int	setup_threads(t_data *param)
-{
-	int		i;
-	t_philo	*new;
-
-	i = 0;
-	while ((size_t)i < param->thread.n_thread)
-	{
-		new = new_philo(i + 1, param);
-		if (!new)
-			return (free_s_philo(&param->thread), ERROR);
-		add_philo(&param->thread, new);
-		i++;
-	}
-	param->thread.current = param->thread.head;
 	return (SUCCESS);
 }
