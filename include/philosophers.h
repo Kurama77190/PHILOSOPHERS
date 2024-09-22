@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/21 04:07:49 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/22 05:16:46 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,11 @@
 # define SUCCESS 0
 # define ERROR 1
 
-typedef enum e_action
-{
-	EATING,
-	SLEEPING,
-	THINKING
-}	t_action;
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                       STRUCT                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-typedef struct		s_philo
+typedef struct		s_philo // malloc
 {
 	pthread_t		tid;
 	unsigned long	id;
@@ -72,23 +65,23 @@ typedef struct	s_time
 
 typedef struct s_fork
 {
-	pthread_mutex_t	*fork;
+	pthread_mutex_t	*fork; // malloc
 	size_t			size;
 }					t_fork;
 
 typedef struct s_sync
 {
-	pthread_mutex_t	meal_lock;
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	write_lock;
+	pthread_mutex_t	meal_lock;
 	bool			dead;
-	long			timestamp;
+	bool			stop_monitor;
+	bool			stop_routine;
 }					t_sync;
 
 typedef	struct s_monitor
 {
 	pthread_t		monitor_thread;
-	pthread_mutex_t	monitors_fork;
 }					t_monitor;
 
 typedef struct	s_data
@@ -118,14 +111,24 @@ int				init_mutex_routine(t_data *param);
 //                                      MONITOR                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-void			*monitor(void *param);
+void			*monitor(void *arg);
+int				check_philosopher_dead(t_philo *philo, long current_time, t_data *param);
+int				check_global_death(t_data *param);
+int				monitor_philosophers(t_data *param);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-//                                      THREADS                                            //
+//                                      ROUTINE                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 void			*routine_a(void *arg);
 void			*routine_b(void *arg);
+int				philo_take_fork_a(t_philo *philo);
+int				philo_take_fork_b(t_philo *philo);
+int				philo_eat_a(t_philo *philo);
+int				philo_eat_b(t_philo *philo);
+int				philo_sleep(t_philo *philo);
+void			exit_routine(t_philo *philo);
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                       UTILS                                             //

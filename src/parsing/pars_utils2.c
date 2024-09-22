@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:57:27 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/21 04:08:01 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/21 14:48:27 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,12 @@ int	create_philo(t_data *param)
 		}
 		else
 		{
-			if (pthread_create(&current->tid, NULL, &routine_a, current) != 0)
+			if (pthread_create(&current->tid, NULL, &routine_b, current) != 0)
 				return (ERROR);						
 		}
 		usleep(100);
+		if (current->next == current)
+			return (SUCCESS);
 		current = current->next;
 		i++;
 	}

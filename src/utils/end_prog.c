@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 05:34:33 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/21 04:08:15 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/22 04:55:52 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ void	free_s_sync(t_sync *param);
 
 void	end_prog(t_data *param, char *stderr, int exit_code)
 {
+	while (!param->sync.stop_monitor && !param->sync.stop_routine)
+	{
+		sleep(100);
+	}
 	free_s_sync(&param->sync);
 	free_s_monitor(&param->monitor);
 	free_s_philo(&param->thread);
@@ -30,11 +34,9 @@ void	free_s_monitor(t_monitor *param)
 {
 	if (param->monitor_thread != 0)
 		return ;
-	pthread_join(param->monitor_thread, NULL);
-	param->monitor_thread = 0;
-	if (pthread_mutex_destroy(&param->monitors_fork) != 0)
+	if (pthread_join(param->monitor_thread, NULL) != 0)
 	{
-		perror("Error destroying monitor mutex");
+		perror("Error joining thread");
 	}
 	return ;
 }
