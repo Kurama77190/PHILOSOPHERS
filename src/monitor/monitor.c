@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:02:07 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 17:50:04 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:53:05 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,29 +24,17 @@ void	*monitor(void *arg)
 	{
 		if (check_global_death(param) == ERROR)
 		{
-			exit_monitor(param);
 			return (NULL);
 		}
 		if (monitor_philosophers(param) == ERROR)
 		{
-			exit_monitor(param);
 			return (NULL);
 		}
 		if (check_global_satiate(param) == SATIATE)
 		{
-			exit_monitor(param);
 			return (NULL);
 		}
 		usleep(8000);
 	}
 	return (NULL);
 }
-
-void	exit_monitor(t_data *param)
-{
-	pthread_mutex_lock(&param->sync.dead_lock);
-	param->sync.stop_monitor = true;
-	pthread_mutex_unlock(&param->sync.dead_lock);
-	return ;
-}
-

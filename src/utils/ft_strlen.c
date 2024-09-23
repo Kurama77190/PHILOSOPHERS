@@ -6,18 +6,18 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 16:59:58 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/08/31 17:01:04 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:07:55 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-size_t  ft_strlen(char *s)
+size_t	ft_strlen(char *s)
 {
-    size_t  i;
+	size_t	i;
 
-    i = 0;
-    while(s[i])
-        i++;
-    return (i);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }

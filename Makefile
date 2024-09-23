@@ -6,7 +6,7 @@
 #    By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 16:20:32 by sben-tay          #+#    #+#              #
-#    Updated: 2024/09/23 08:01:25 by sben-tay         ###   ########.fr        #
+#    Updated: 2024/09/23 18:06:06 by sben-tay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ ROUTINE = src/routine/
 BUILD = builder/
 
 # CFLAGS += -fsanitize=address
-# CFLAGS += -fsanitize=thread
+CFLAGS += -fsanitize=thread
 
 #=================================================__SRC__OF__PROJECT__=============================================================================
 SRC = src/main.c src/debug.c \

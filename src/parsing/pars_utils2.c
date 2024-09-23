@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:57:27 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 17:06:52 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:07:03 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	create_philo(t_data *param)
 int	sequential_thread_launch(t_data *param, t_philo *current)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < param->thread.size)
 	{

@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 00:53:16 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 07:06:56 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:11:10 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	print_fork(t_philo *philo)
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	if (philo->sync->dead)
 	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);		
+		pthread_mutex_unlock(&philo->sync->dead_lock);
 		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
@@ -40,7 +40,7 @@ int	print_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	if (philo->sync->dead)
 	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);		
+		pthread_mutex_unlock(&philo->sync->dead_lock);
 		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
@@ -55,7 +55,7 @@ int	print_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	if (philo->sync->dead)
 	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);		
+		pthread_mutex_unlock(&philo->sync->dead_lock);
 		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
@@ -67,7 +67,7 @@ int	print_sleep(t_philo *philo)
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	if (philo->sync->dead)
 	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);		
+		pthread_mutex_unlock(&philo->sync->dead_lock);
 		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
@@ -77,7 +77,7 @@ int	print_sleep(t_philo *philo)
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	if (philo->sync->dead)
 	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);		
+		pthread_mutex_unlock(&philo->sync->dead_lock);
 		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
@@ -89,7 +89,7 @@ int	print_think(t_philo *philo)
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	if (philo->sync->dead)
 	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);		
+		pthread_mutex_unlock(&philo->sync->dead_lock);
 		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
@@ -99,7 +99,7 @@ int	print_think(t_philo *philo)
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	if (philo->sync->dead)
 	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);		
+		pthread_mutex_unlock(&philo->sync->dead_lock);
 		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
@@ -121,7 +121,7 @@ int	print_die(t_philo *philo)
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	if (philo->sync->dead)
 	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);		
+		pthread_mutex_unlock(&philo->sync->dead_lock);
 		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);

@@ -6,13 +6,13 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 17:46:33 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/20 04:02:27 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:07:31 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	free_s_fork(t_fork	*param)
+void	free_s_fork(t_fork *param)
 {
 	size_t	i;
 

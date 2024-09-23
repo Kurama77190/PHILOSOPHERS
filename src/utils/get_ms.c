@@ -6,17 +6,17 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:00:23 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/19 23:09:42 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:07:58 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-long int get_ms(void)
+long int	get_ms(void)
 {
-	struct timeval tv;
-	static long int start_time = 0;
-	long int 		current_time;
+	struct timeval	tv;
+	static long int	start_time = 0;
+	long int		current_time;
 
 	if (gettimeofday(&tv, NULL) == -1)
 	{

@@ -12,8 +12,6 @@
 
 #include "philosophers.h"
 
-void	exit_routine(t_philo *philo);
-
 void	*routine_a(void *arg)
 {
 	t_philo	*philo;
@@ -23,17 +21,14 @@ void	*routine_a(void *arg)
 	{
 		if (philo_take_fork_a(philo) == DIED)
 		{
-			exit_routine(philo);
 			return (NULL);
 		}
 		if (philo_eat_a(philo) == DIED)
 		{
-			exit_routine(philo);
 			return (NULL);
 		}
 		if (philo_sleep(philo) == DIED)
 		{
-			exit_routine(philo);
 			return (NULL);
 		}
 	}
@@ -49,28 +44,16 @@ void	*routine_b(void *arg)
 	{
 		if (philo_take_fork_b(philo) == DIED)
 		{
-			exit_routine(philo);
 			return (NULL);
 		}
 		if (philo_eat_b(philo) == DIED)
 		{
-			exit_routine(philo);
 			return (NULL);
 		}
 		if (philo_sleep(philo) == DIED)
 		{
-			exit_routine(philo);
 			return (NULL);
 		}
-		usleep(1000);
 	}
 	return (NULL);
-}
-
-void	exit_routine(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->sync->dead_lock);
-		philo->sync->stop_routine = true;
-	pthread_mutex_unlock(&philo->sync->dead_lock);
-	return ;
 }

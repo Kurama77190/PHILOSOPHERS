@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 14:21:59 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/09 01:24:42 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:09:19 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ bool	ft_check_overflow(char *str, long long nb, int sign, size_t len);
 
 bool	atoi_overflow(char *strs)
 {
-    if (is_atoi_overflow(strs))
+	if (is_atoi_overflow(strs))
 		return (true);
 	return (false);
 }
@@ -55,11 +55,11 @@ bool	ft_check_overflow(char *str, long long nb, int sign, size_t len)
 	int	digit;
 
 	digit = str[len] - '0';
-	if (sign == 1 && (nb > INT_MAX / 10 || \
-	(nb == INT_MAX / 10 && digit > INT_MAX % 10)))
+	if (sign == 1 && (nb > INT_MAX / 10 || (nb == INT_MAX / 10
+				&& digit > INT_MAX % 10)))
 		return (true);
 	else if (sign == -1 && (nb > -(long long)INT_MIN / 10 || (nb == \
-	-(long long)INT_MIN / 10 && digit > -(long long)INT_MIN % 10)))
+				-(long long)INT_MIN / 10 && digit > -(long long)INT_MIN % 10)))
 		return (true);
 	else
 		return (false);

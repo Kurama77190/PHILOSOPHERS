@@ -6,13 +6,13 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 16:59:33 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/08/31 17:20:41 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:07:52 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int ft_putstr_fd(char *s, int fd)
+int	ft_putstr_fd(char *s, int fd)
 {
 	size_t	i;
 
@@ -21,6 +21,6 @@ int ft_putstr_fd(char *s, int fd)
 		return (-1);
 	while (s[i])
 		if (write(fd, &s[i++], 1) == -1)
-		return (-1);
+			return (-1);
 	return (0);
 }

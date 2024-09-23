@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/31 14:49:55 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 04:02:52 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:10:43 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_s_philo(t_philoControl *lst)
 {
-	void			*next;
+	void	*next;
 
 	if (!lst->head)
 	{
@@ -24,10 +24,10 @@ void	free_s_philo(t_philoControl *lst)
 	{
 		next = lst->head->next;
 		if (lst->head->tid != 0)
+		{
 			if (pthread_join(lst->head->tid, NULL) != 0)
-			{
 				perror("Error joining thread");
-			}
+		}
 		free(lst->head);
 		lst->head = next;
 		lst->size--;
