@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 00:53:16 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 18:11:10 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:22:59 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	print_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->sync->dead_lock);
 	pthread_mutex_lock(&philo->sync->write_lock);
 	printf("%lu %lu is eating\n", get_ms(), philo->id);
-	if (philo->sync->optinnal)
+	if (philo->sync->optionnal)
 	{
 		philo->count_eat++;
 		philo->sync->count_all_eat++;

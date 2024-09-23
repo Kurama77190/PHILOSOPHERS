@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:07:54 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 18:06:54 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:23:53 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	setup_arg(int ac, char **av, t_data *param)
 	if (ac == 6)
 	{
 		param->time.n_of_time_eat = (size_t)(ft_atoi(av[5]));
-		param->sync.optinnal = true;
+		param->sync.optionnal = true;
 	}
 	if (param->thread.n_thread == 1)
 	{

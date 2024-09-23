@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 18:20:53 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:23:21 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct s_sync
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	meal_lock;
 	long			count_all_eat;
+	bool			optionnal;
 	bool			dead;
 }					t_sync;
 

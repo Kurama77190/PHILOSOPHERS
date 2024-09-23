@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 16:22:17 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 18:11:56 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:23:37 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	philo_take_fork_a(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->optinnal)
+	if (philo->sync->optionnal)
 	{
 		if (philo->count_eat == philo->time->n_of_time_eat)
 		{
@@ -43,7 +43,7 @@ int	philo_take_fork_a(t_philo *philo)
 int	philo_take_fork_b(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->optinnal)
+	if (philo->sync->optionnal)
 	{
 		if (philo->count_eat == philo->time->n_of_time_eat)
 		{
