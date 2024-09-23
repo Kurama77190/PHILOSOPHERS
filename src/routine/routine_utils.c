@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 16:22:17 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 18:52:23 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 22:27:10 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int	philo_sleep(t_philo *philo)
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	philo->last_meal_time = get_ms();
 	pthread_mutex_unlock(&philo->sync->dead_lock);
-	usleep(philo->time->time_to_eat * 1000);
+	usleep(philo->time->time_to_sleep * 1000);
 	if (print_think(philo) == DIED)
 	{
 		return (DIED);

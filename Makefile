@@ -6,7 +6,7 @@
 #    By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 16:20:32 by sben-tay          #+#    #+#              #
-#    Updated: 2024/09/23 18:32:17 by sben-tay         ###   ########.fr        #
+#    Updated: 2024/09/23 20:32:00 by sben-tay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ MAKEFLAGS += --no-print-directory
 
 # Définitions de base
 
-NAME = philosophers
+NAME = philo
 #NAME_BNS = philosophers_bonus
 CC = cc
 CFLAGS = -g3 -Wall -Wextra -Werror 
