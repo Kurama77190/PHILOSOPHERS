@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:07:54 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 18:23:53 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:59:49 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,6 @@ int	setup_arg(int ac, char **av, t_data *param)
 	{
 		param->time.n_of_time_eat = (size_t)(ft_atoi(av[5]));
 		param->sync.optionnal = true;
-	}
-	if (param->thread.n_thread == 1)
-	{
-		printf("0 1 is dead\n");
-		return (ERROR);
 	}
 	if (check_none_args(ac, param) == ERROR)
 		return (ERROR);

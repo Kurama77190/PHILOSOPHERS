@@ -12,6 +12,8 @@
 
 #include "philosophers.h"
 
+void	only_one(t_philo *philo);
+
 void	*routine_a(void *arg)
 {
 	t_philo	*philo;
@@ -19,6 +21,11 @@ void	*routine_a(void *arg)
 	philo = (t_philo *)arg;
 	while (1)
 	{
+		if (philo->next == philo)
+		{
+			only_one(philo);
+			return (NULL);
+		}
 		if (philo_take_fork_a(philo) == DIED)
 		{
 			return (NULL);
@@ -42,6 +49,11 @@ void	*routine_b(void *arg)
 	philo = (t_philo *)arg;
 	while (1)
 	{
+		if (philo->next == philo)
+		{
+			only_one(philo);
+			return (NULL);
+		}
 		if (philo_take_fork_b(philo) == DIED)
 		{
 			return (NULL);
@@ -56,4 +68,11 @@ void	*routine_b(void *arg)
 		}
 	}
 	return (NULL);
+}
+
+void	only_one(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left);
+	printf("%lu %lu has taken a fork\n", get_ms(), philo->id);
+	pthread_mutex_unlock(philo->left);
 }

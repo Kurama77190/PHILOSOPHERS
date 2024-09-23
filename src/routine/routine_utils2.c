@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 00:53:16 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 18:22:59 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 18:47:51 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	print_fork(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
 	pthread_mutex_lock(&philo->sync->write_lock);
-	printf("%lu %lu has taken a fork\n", get_ms(), philo->id);
 	printf("%lu %lu has taken a fork\n", get_ms(), philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
 	pthread_mutex_lock(&philo->sync->dead_lock);
