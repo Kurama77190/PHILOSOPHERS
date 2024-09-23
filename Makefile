@@ -6,7 +6,7 @@
 #    By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 16:20:32 by sben-tay          #+#    #+#              #
-#    Updated: 2024/09/23 23:32:19 by sben-tay         ###   ########.fr        #
+#    Updated: 2024/09/23 23:54:49 by sben-tay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME = philo
 #NAME_BNS = philosophers_bonus
 CC = cc
 CFLAGS = -Wall -Wextra -Werror 
-CPPFLAGS = -I./include -pthread
+CPPFLAGS = -g3 -I./include -pthread
 
 UTILS = src/utils/
 PARS  = src/parsing/

@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 05:34:33 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 23:12:51 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 23:56:13 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,21 @@ void	free_s_monitor(t_monitor *param)
 
 void	free_s_sync(t_sync *param)
 {
-	if (&param->dead_lock != NULL)
+	if (&param->dead_lock != 0)
 	{
 		if (pthread_mutex_destroy(&param->dead_lock) != 0)
 		{
 			perror("Error destroying sync mutex dead_lock");
 		}
 	}
-	if (&param->write_lock != NULL)
+	if (&param->write_lock != 0)
 	{
 		if (pthread_mutex_destroy(&param->write_lock) != 0)
 		{
 			perror("Error destroying sync mutex write_lock");
 		}
 	}
-	if (&param->meal_lock != NULL)
+	if (&param->meal_lock != 0)
 	{
 		if (pthread_mutex_destroy(&param->meal_lock) != 0)
 		{
