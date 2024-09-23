@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 16:22:35 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 18:35:26 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 23:07:32 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	check_philosopher_dead(t_philo *philo, long current_time, t_data *param)
 int	check_global_death(t_data *param)
 {
 	pthread_mutex_lock(&param->sync.dead_lock);
-	if (param->sync.dead)
+	if (param->sync.dead || param->sync.stop_monitor)
 	{
 		pthread_mutex_unlock(&param->sync.dead_lock);
 		return (ERROR);

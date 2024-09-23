@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:57:27 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 22:24:50 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 23:39:35 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,22 @@ int	create_philo(t_data *param)
 
 	current = param->thread.head;
 	if (sequential_thread_launch(param, current) == ERROR)
+	{
+		pthread_mutex_lock(&param->sync.dead_lock);
+		param->sync.dead = true;
+		param->sync.stop_monitor = true;
+		pthread_mutex_unlock(&param->sync.dead_lock);
 		return (ERROR);
+	}
 	if (pthread_create(&param->monitor.monitor_thread, NULL, &monitor,
 			param) != 0)
+	{
+		pthread_mutex_lock(&param->sync.dead_lock);
+		param->sync.dead = true;
+		param->sync.stop_monitor = true;
+		pthread_mutex_unlock(&param->sync.dead_lock);
 		return (ERROR);
+	}
 	return (SUCCESS);
 }
 
@@ -94,7 +106,7 @@ int	setup_mutex(t_data *param)
 	size_t	i;
 
 	param->mutex.size = param->thread.size;
-	param->mutex.fork = malloc(sizeof(pthread_mutex_t) * param->mutex.size);
+	param->mutex.fork = ft_calloc(param->mutex.size, sizeof(pthread_mutex_t));
 	if (param->mutex.fork == NULL)
 	{
 		ft_putstr_fd("Error alocation fork.\n", 2);

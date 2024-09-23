@@ -1,40 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   monitor.c                                          :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/19 18:02:07 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 23:06:19 by sben-tay         ###   ########.fr       */
+/*   Created: 2024/09/23 23:28:50 by sben-tay          #+#    #+#             */
+/*   Updated: 2024/09/23 23:29:12 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	exit_monitor(t_data *param);
-int		check_global_satiate(t_data *param);
-
-void	*monitor(void *arg)
+static size_t	ft_securite(size_t count, size_t size)
 {
-	t_data	*param;
+	size_t	size_max;
 
-	param = (t_data *)arg;
-	while (1)
-	{
-		if (check_global_death(param) == ERROR)
-		{
-			return (NULL);
-		}
-		if (monitor_philosophers(param) == ERROR)
-		{
-			return (NULL);
-		}
-		if (check_global_satiate(param) == SATIATE)
-		{
-			return (NULL);
-		}
-		// usleep(8000);
-	}
-	return (NULL);
+	size_max = LONG_MAX;
+	if (count == 0 || size == 0)
+		return (0);
+	if (count > size_max / size || size > size_max / count)
+		return (LONG_MAX);
+	return (count * size);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	unsigned char	*tab;
+
+	tab = malloc(ft_securite(count, size));
+	if (!tab)
+		return (NULL);
+	ft_memset(tab, 0, ft_securite(count, size));
+	return (tab);
 }

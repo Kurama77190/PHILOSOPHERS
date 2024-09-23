@@ -6,7 +6,7 @@
 #    By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 16:20:32 by sben-tay          #+#    #+#              #
-#    Updated: 2024/09/23 20:32:00 by sben-tay         ###   ########.fr        #
+#    Updated: 2024/09/23 23:32:19 by sben-tay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ MAKEFLAGS += --no-print-directory
 NAME = philo
 #NAME_BNS = philosophers_bonus
 CC = cc
-CFLAGS = -g3 -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror 
 CPPFLAGS = -I./include -pthread
 
 UTILS = src/utils/
@@ -36,7 +36,7 @@ SRC = src/main.c src/debug.c \
 	$(addprefix $(MONITOR), monitor.c monitor_utils.c ) \
 	$(addprefix $(UTILS), ft_atoi.c add_philo.c free_s_philo.c atoi_overflow.c \
 	new_philo.c ft_strlen.c ft_putstr_fd.c ft_is_digit.c \
-	end_prog.c ft_memset.c free_s_fork.c get_ms.c )
+	end_prog.c ft_memset.c free_s_fork.c get_ms.c ft_calloc.c )
 
 $(shell mkdir -p $(BUILD))
 

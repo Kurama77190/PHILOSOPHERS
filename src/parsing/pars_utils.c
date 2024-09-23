@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:07:54 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 18:59:49 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 23:20:24 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,10 @@ int	setup_arg(int ac, char **av, t_data *param)
 		param->time.n_of_time_eat = (size_t)(ft_atoi(av[5]));
 		param->sync.optionnal = true;
 	}
+	if (param->thread.n_thread > (size_t)200)
+	{
+		return (ft_putstr_fd("there are too many threads.\n", 2), ERROR);
+	}
 	if (check_none_args(ac, param) == ERROR)
 		return (ERROR);
 	return (SUCCESS);
@@ -119,7 +123,7 @@ int	setup_threads(t_data *param)
 	{
 		new = new_philo(i + 1, param);
 		if (!new)
-			return (free_s_philo(&param->thread), ERROR);
+			return (ERROR);
 		add_philo(&param->thread, new);
 		i++;
 	}

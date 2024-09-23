@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 18:23:21 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 23:30:50 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_sync
 	long			count_all_eat;
 	bool			optionnal;
 	bool			dead;
+	bool			stop_monitor;
 }					t_sync;
 
 typedef struct s_monitor
@@ -150,6 +151,7 @@ t_philo				*new_philo(int nb, t_data *param);
 void				add_philo(t_philoControl *lst, t_philo *new);
 void				free_s_philo(t_philoControl *lst);
 size_t				ft_strlen(char *s);
+void				*ft_calloc(size_t count, size_t size);
 int					ft_putstr_fd(char *s, int fd);
 bool				ft_is_digit(char *split);
 void				end_prog(t_data *param, char *stderr, int exit_code);
