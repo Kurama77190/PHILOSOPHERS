@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:57:27 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 04:56:56 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:06:52 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ int	sequential_thread_launch(t_data *param, t_philo *current)
 			if (pthread_create(&current->tid, NULL, &routine_b, current) != 0)
 				return (ERROR);
 		}
-		usleep(1000);
 		if (current->next == current)
 			return (SUCCESS);
 		i++;
 		current = current->next;
+		usleep(1000);
 	}
 	return (SUCCESS);
 }

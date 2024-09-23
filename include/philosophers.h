@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 07:03:03 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:50:44 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void			*monitor(void *arg);
 int				check_philosopher_dead(t_philo *philo, long current_time, t_data *param);
 int				check_global_death(t_data *param);
 int				monitor_philosophers(t_data *param);
+int				check_global_satiate(t_data *param);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                      ROUTINE                                            //

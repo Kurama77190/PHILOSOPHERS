@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 05:34:33 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 04:01:31 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:48:39 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	free_s_sync(t_sync *param);
 
 void	end_prog(t_data *param, char *stderr, int exit_code)
 {
-	free_s_sync(&param->sync);
 	free_s_monitor(&param->monitor);
 	free_s_philo(&param->thread);
+	free_s_sync(&param->sync);
 	free_s_fork(&param->mutex);
-	ft_putstr_fd(stderr, 2);
+	ft_putstr_fd(stderr, 2);	
 	exit(exit_code);
 }
 

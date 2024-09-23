@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 16:22:35 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 03:20:04 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 17:50:17 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,33 @@ int	monitor_philosophers(t_data *param)
 {
 	t_philo	*current;
 	long	current_time;
-	int		i;
 
 	current = param->thread.head;
-	i = 0;
-	current_time = get_ms();
-	while (i < param->thread.size)
+	while (current != NULL)
 	{
-		usleep(100);
-		if (check_philosopher_dead(current, current_time, param) == ERROR)
+		current_time = get_ms();
+		pthread_mutex_lock(&param->sync.dead_lock);
+		if (current_time - current->last_meal_time > param->time.time_to_die)
 		{
+			param->sync.dead = true;
+			pthread_mutex_unlock(&param->sync.dead_lock);
+			printf("Philosophe %lu est mort.\n", current->id);
 			return (ERROR);
 		}
+		pthread_mutex_unlock(&param->sync.dead_lock);
 		current = current->next;
-		i++;
 	}
+	return (SUCCESS);
+}
+
+int	check_global_satiate(t_data *param)
+{
+	pthread_mutex_lock(&param->sync.dead_lock);
+	if (param->time.n_of_time_eat == param->sync.count_all_eat)
+	{
+		pthread_mutex_unlock(&param->sync.dead_lock);
+		return (SATIATE);
+	}
+	pthread_mutex_unlock(&param->sync.dead_lock);
 	return (SUCCESS);
 }

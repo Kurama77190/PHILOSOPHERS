@@ -70,12 +70,6 @@ void	*routine_b(void *arg)
 void	exit_routine(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->optinnal)
-	{
-		philo->sync->stop_routine = true;
-		philo->sync->stop_optinnal = true;
-	}
-	else
 		philo->sync->stop_routine = true;
 	pthread_mutex_unlock(&philo->sync->dead_lock);
 	return ;
