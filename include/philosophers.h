@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/22 05:16:46 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 07:03:03 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 
 # define SUCCESS 0
 # define ERROR 1
+# define DIED 2
+# define SATIATE 3
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                       STRUCT                                            //
@@ -41,7 +43,7 @@ typedef struct		s_philo // malloc
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
 	long			last_meal_time;
-	long			last_get_ms;
+	long			count_eat;
 	struct s_time	*time;
 	struct s_sync	*sync;
 	struct s_philo	*next;
@@ -61,11 +63,12 @@ typedef struct	s_time
 	long			time_to_die;
 	long			time_to_eat;
 	long			time_to_sleep;
+	long			n_of_time_eat;
 }					t_time;
 
 typedef struct s_fork
 {
-	pthread_mutex_t	*fork; // malloc
+	pthread_mutex_t	*fork;
 	size_t			size;
 }					t_fork;
 
@@ -74,9 +77,12 @@ typedef struct s_sync
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	meal_lock;
+	long			count_all_eat;
+	bool			optinnal;
 	bool			dead;
 	bool			stop_monitor;
 	bool			stop_routine;
+	bool			stop_optinnal;
 }					t_sync;
 
 typedef	struct s_monitor
@@ -93,19 +99,21 @@ typedef struct	s_data
 	t_sync			sync;
 }					t_data;
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                      PARSING                                            //
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 int				parsing(int ac, char **av, t_data *param);
-int				check_digit(char **av);
-int				check_overflow(char **av);
+int				check_digit(int ac, char **av);
+int				check_overflow(int ac, char **av);
 int				setup_mutex(t_data *param);
 int				init_mutex_thread(t_data *param, size_t nb_fork);
 int				setup_threads(t_data *param);
 int				create_philo(t_data *param);
 int				init_mutex_routine(t_data *param);
+int				setup_arg(int ac, char **av, t_data *param);
+int				check_none_args(int ac, t_data *param);
+int				sequential_thread_launch(t_data *param, t_philo *current);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 //                                      MONITOR                                            //
@@ -128,6 +136,11 @@ int				philo_eat_a(t_philo *philo);
 int				philo_eat_b(t_philo *philo);
 int				philo_sleep(t_philo *philo);
 void			exit_routine(t_philo *philo);
+int				print_fork(t_philo *philo);
+int				print_eat(t_philo *philo);
+int				print_sleep(t_philo *philo);
+int				print_think(t_philo *philo);
+int				print_die(t_philo *philo);
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////

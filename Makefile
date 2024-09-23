@@ -6,7 +6,7 @@
 #    By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 16:20:32 by sben-tay          #+#    #+#              #
-#    Updated: 2024/09/21 16:21:57 by sben-tay         ###   ########.fr        #
+#    Updated: 2024/09/23 08:01:25 by sben-tay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ BUILD = builder/
 #=================================================__SRC__OF__PROJECT__=============================================================================
 SRC = src/main.c src/debug.c \
 	$(addprefix $(PARS), parsing.c pars_utils.c pars_utils2.c ) \
-	$(addprefix $(ROUTINE), routine.c routine_utils.c ) \
+	$(addprefix $(ROUTINE), routine.c routine_utils.c routine_utils2.c ) \
 	$(addprefix $(MONITOR), monitor.c monitor_utils.c ) \
 	$(addprefix $(UTILS), ft_atoi.c add_philo.c free_s_philo.c atoi_overflow.c \
 	new_philo.c ft_strlen.c ft_putstr_fd.c ft_is_digit.c \

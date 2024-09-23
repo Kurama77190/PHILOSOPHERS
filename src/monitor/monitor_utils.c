@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 16:22:35 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/22 05:10:36 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 03:20:04 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_philosopher_dead(t_philo *philo, long current_time, t_data *param)
 		param->sync.dead = true;
 		pthread_mutex_unlock(&param->sync.dead_lock);
 		pthread_mutex_unlock(&param->sync.meal_lock);
-		printf("[%lu]Philosophe %lu est mort.\n", get_ms(), philo->id);
+		printf("%lu %lu died\n", get_ms(), philo->id);
 		return (ERROR);
 	}
 	pthread_mutex_unlock(&param->sync.meal_lock);
@@ -51,8 +51,11 @@ int	monitor_philosophers(t_data *param)
 	current_time = get_ms();
 	while (i < param->thread.size)
 	{
+		usleep(100);
 		if (check_philosopher_dead(current, current_time, param) == ERROR)
+		{
 			return (ERROR);
+		}
 		current = current->next;
 		i++;
 	}

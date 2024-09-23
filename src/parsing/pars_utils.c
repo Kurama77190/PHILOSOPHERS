@@ -6,13 +6,13 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:07:54 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/21 03:14:04 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 07:10:41 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int	check_digit(char **av)
+int	check_digit(int ac, char **av)
 {
 	if (!ft_is_digit(av[1]))
 	{
@@ -30,10 +30,15 @@ int	check_digit(char **av)
 	{
 		return (ft_putstr_fd("time_to_sleep is not digit.\n", 2), ERROR);
 	}
+	if (ac == 6)
+	{
+		if (!ft_is_digit(av[5]))
+			return (ft_putstr_fd("n_of_time_eat is not digit.\n", 2), ERROR);
+	}
 	return (SUCCESS);
 }
 
-int	check_overflow(char **av)
+int	check_overflow(int ac, char **av)
 {
 	if (atoi_overflow(av[1]))
 	{
@@ -51,70 +56,78 @@ int	check_overflow(char **av)
 	{
 		return (ft_putstr_fd("time_to_sleep overflow.\n", 2), ERROR);
 	}
+	if (ac == 6)
+	{
+		if (atoi_overflow(av[5]))
+			return (ft_putstr_fd("n_of_time_eat overflow.\n", 2), ERROR);
+	}
 	return (SUCCESS);
 }
 
-int	init_mutex_thread(t_data *param, size_t nb_fork)
+int	check_none_args(int ac, t_data *param)
 {
-	size_t	i;
+	if (param->thread.n_thread == 0)
+	{
+		ft_putstr_fd("number_philo is zero.\n", 2);
+		return (ERROR);
+	}
+	if (param->time.time_to_die == 0)
+	{
+		ft_putstr_fd("time_to_die is zero.\n", 2);
+		return (ERROR);
+	}
+	if (param->time.time_to_eat == 0)
+	{
+		ft_putstr_fd("time_to_eat is zero.\n", 2);
+		return (ERROR);
+	}
+	if (param->time.time_to_sleep == 0)
+	{
+		return (ft_putstr_fd("time_to_sleep is zero.\n", 2), ERROR);
+	}
+	if (ac == 6)
+	{
+		if (param->time.n_of_time_eat == 0)
+			return (ft_putstr_fd("n_of_time_eat is zero.\n", 2), ERROR);
+	}
+	return (SUCCESS);
+}
+
+int	setup_arg(int ac, char **av, t_data *param)
+{
+	param->thread.n_thread = ft_atoi(av[1]);
+	param->time.time_to_die = (size_t)ft_atoi(av[2]);
+	param->time.time_to_eat = (size_t)ft_atoi(av[3]);
+	param->time.time_to_sleep = (size_t)ft_atoi(av[4]);
+	if (ac == 6)
+	{
+		param->time.n_of_time_eat = (size_t)(ft_atoi(av[5]));
+		param->sync.optinnal = true;
+	}
+	if (param->thread.n_thread == 1)
+	{
+		printf("0 1 is dead\n");
+		return (ERROR);
+	}
+	if (check_none_args(ac, param) == ERROR)
+		return (ERROR);
+	return (SUCCESS);
+}
+
+int	setup_threads(t_data *param)
+{
+	int		i;
+	t_philo	*new;
 
 	i = 0;
-	while (i < nb_fork)
+	while ((size_t)i < param->thread.n_thread)
 	{
-		if (pthread_mutex_init(&param->mutex.fork[i], NULL) != 0)
-		{
-			ft_putstr_fd("Error initializing mutex philo.\n", 2);
-			return (ERROR);
-		}
+		new = new_philo(i + 1, param);
+		if (!new)
+			return (free_s_philo(&param->thread), ERROR);
+		add_philo(&param->thread, new);
 		i++;
 	}
-	return (SUCCESS);
-}
-
-int	init_mutex_routine(t_data *param)
-{
-	if (pthread_mutex_init(&param->sync.meal_lock, NULL) != 0)
-	{
-		ft_putstr_fd("Error initializing mutex meal.\n", 2);
-		return (ERROR);
-	}
-	if (pthread_mutex_init(&param->sync.write_lock, NULL) != 0)
-	{
-		ft_putstr_fd("Error initializing mutex write.\n", 2);
-		return (ERROR);
-	}
-	if (pthread_mutex_init(&param->sync.dead_lock, NULL) != 0)
-	{
-		ft_putstr_fd("Error initializing mutex write.\n", 2);
-		return (ERROR);
-	}
-	return (SUCCESS);
-}
-
-int	setup_mutex(t_data *param)
-{
-	t_philo	*current;
-	size_t	i;
-
-	param->mutex.size = param->thread.size;
-	param->mutex.fork = malloc(sizeof(pthread_mutex_t) * param->mutex.size);
-	if (param->mutex.fork == NULL)
-	{
-		ft_putstr_fd("Error alocation fork.\n", 2);
-		return (ERROR);
-	}
-	if (init_mutex_thread(param, param->mutex.size) == ERROR)
-		return (ERROR);
-	if (init_mutex_routine(param) == ERROR)
-		return (ERROR);
-	current = param->thread.head;
-	i = 0;
-	while (i < param->mutex.size)
-	{
-		current->left = &param->mutex.fork[i];
-		current->right = &param->mutex.fork[(i + 1) % param->mutex.size];
-		current = current->next;
-		i++;
-	}
+	param->thread.current = param->thread.head;
 	return (SUCCESS);
 }

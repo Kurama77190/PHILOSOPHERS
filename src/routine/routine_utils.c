@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 16:22:17 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/22 05:10:10 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/23 07:09:49 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,52 @@
 int	philo_take_fork_a(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->sync->dead_lock);
+	if (philo->sync->optinnal)
+		if (philo->count_eat == philo->time->n_of_time_eat)
+		{
+			pthread_mutex_unlock(&philo->sync->dead_lock);
+			return (DIED);
+		}
 	if (philo->sync->dead)
 	{
 		pthread_mutex_unlock(&philo->sync->dead_lock);
-		return (ERROR);
+		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
 	pthread_mutex_lock(philo->left);
 	pthread_mutex_lock(philo->right);
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
+	if (print_fork(philo) == DIED)
 	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
 		pthread_mutex_unlock(philo->right);
 		pthread_mutex_unlock(philo->left);
-		return (ERROR);
+		return (DIED);
 	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
 	return (SUCCESS);
 }
 
 int	philo_take_fork_b(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->sync->dead_lock);
+	if (philo->sync->optinnal)
+		if (philo->count_eat == philo->time->n_of_time_eat)
+		{
+			pthread_mutex_unlock(&philo->sync->dead_lock);
+			return (DIED);
+		}
 	if (philo->sync->dead)
 	{
 		pthread_mutex_unlock(&philo->sync->dead_lock);
-		return (ERROR);
+		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
 	pthread_mutex_lock(philo->right);
 	pthread_mutex_lock(philo->left);
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
+	if (print_fork(philo) == DIED)
 	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
 		pthread_mutex_unlock(philo->left);
 		pthread_mutex_unlock(philo->right);
-		return (ERROR);
+		return (DIED);
 	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
 	return (SUCCESS);
 }
 
@@ -66,16 +72,19 @@ int	philo_eat_a(t_philo *philo)
 		pthread_mutex_unlock(philo->right);
 		pthread_mutex_unlock(philo->left);
 		pthread_mutex_unlock(&philo->sync->dead_lock);
-		return (ERROR);
+		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
-	pthread_mutex_lock(&philo->sync->write_lock);
-	printf("[%lu]Philosophe %lu mange (gaucher)...\n", get_ms(), philo->id);
-	pthread_mutex_unlock(&philo->sync->write_lock);
+	if (print_eat(philo) == DIED)
+	{
+		pthread_mutex_unlock(philo->right);
+		pthread_mutex_unlock(philo->left);
+		return (DIED);
+	}
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	philo->last_meal_time = get_ms();
-	usleep(philo->time->time_to_eat * 1000);
 	pthread_mutex_unlock(&philo->sync->dead_lock);
+	usleep(philo->time->time_to_eat * 1000);
 	pthread_mutex_unlock(philo->right);
 	pthread_mutex_unlock(philo->left);
 	return (SUCCESS);
@@ -89,18 +98,21 @@ int	philo_eat_b(t_philo *philo)
 		pthread_mutex_unlock(philo->left);
 		pthread_mutex_unlock(philo->right);
 		pthread_mutex_unlock(&philo->sync->dead_lock);
-		return (ERROR);
+		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
-	pthread_mutex_lock(&philo->sync->write_lock);
-	printf("[%lu]Philosophe %lu mange (droitier)...\n", get_ms(), philo->id);
-	pthread_mutex_unlock(&philo->sync->write_lock);
+	if (print_eat(philo) == DIED)
+	{
+		pthread_mutex_unlock(philo->left);
+		pthread_mutex_unlock(philo->right);
+		return (DIED);
+	}
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	philo->last_meal_time = get_ms();
-	usleep(philo->time->time_to_eat);
 	pthread_mutex_unlock(&philo->sync->dead_lock);
-	pthread_mutex_unlock(philo->right);
+	usleep(philo->time->time_to_eat * 1000);
 	pthread_mutex_unlock(philo->left);
+	pthread_mutex_unlock(philo->right);
 	return (SUCCESS);
 }
 
@@ -109,20 +121,21 @@ int	philo_sleep(t_philo *philo)
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	if (philo->sync->dead)
 	{
-		pthread_mutex_unlock(philo->left);
-		pthread_mutex_unlock(philo->right);
 		pthread_mutex_unlock(&philo->sync->dead_lock);
-		return (ERROR);
+		return (DIED);
 	}
 	pthread_mutex_unlock(&philo->sync->dead_lock);
-	pthread_mutex_lock(&philo->sync->write_lock);
-	printf("[%lu]Philosophe %lu mange (droitier)...\n", get_ms(), philo->id);
-	pthread_mutex_unlock(&philo->sync->write_lock);
+	if (print_sleep(philo) == DIED)
+	{
+		return (DIED);
+	}
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	philo->last_meal_time = get_ms();
-	usleep(philo->time->time_to_eat);
 	pthread_mutex_unlock(&philo->sync->dead_lock);
-	pthread_mutex_unlock(philo->right);
-	pthread_mutex_unlock(philo->left);
+	usleep(philo->time->time_to_eat * 1000);
+	if (print_think(philo) == DIED)
+	{
+		return (DIED);
+	}
 	return (SUCCESS);
 }

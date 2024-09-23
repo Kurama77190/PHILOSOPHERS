@@ -21,17 +21,17 @@ void	*routine_a(void *arg)
 	philo = (t_philo *)arg;
 	while (1)
 	{
-		if (philo_take_fork_a(philo) == ERROR)
+		if (philo_take_fork_a(philo) == DIED)
 		{
 			exit_routine(philo);
 			return (NULL);
 		}
-		if (philo_eat_a(philo) == ERROR)
+		if (philo_eat_a(philo) == DIED)
 		{
 			exit_routine(philo);
 			return (NULL);
 		}
-		if (philo_sleep(philo) == ERROR)
+		if (philo_sleep(philo) == DIED)
 		{
 			exit_routine(philo);
 			return (NULL);
@@ -47,28 +47,36 @@ void	*routine_b(void *arg)
 	philo = (t_philo *)arg;
 	while (1)
 	{
-		if (philo_take_fork_b(philo) == ERROR)
+		if (philo_take_fork_b(philo) == DIED)
 		{
 			exit_routine(philo);
 			return (NULL);
 		}
-		if (philo_eat_b(philo) == ERROR)
+		if (philo_eat_b(philo) == DIED)
 		{
 			exit_routine(philo);
 			return (NULL);
 		}
-		if (philo_sleep(philo) == ERROR)
+		if (philo_sleep(philo) == DIED)
 		{
 			exit_routine(philo);
 			return (NULL);
 		}
+		usleep(1000);
 	}
 	return (NULL);
 }
 
 void	exit_routine(t_philo *philo)
 {
-	// pthread_mutex_lock(&philo->sync->dead_lock);
-	philo->sync->stop_routine = true;
-	// pthread_mutex_unlock(&philo->sync->dead_lock);
+	pthread_mutex_lock(&philo->sync->dead_lock);
+	if (philo->sync->optinnal)
+	{
+		philo->sync->stop_routine = true;
+		philo->sync->stop_optinnal = true;
+	}
+	else
+		philo->sync->stop_routine = true;
+	pthread_mutex_unlock(&philo->sync->dead_lock);
+	return ;
 }
