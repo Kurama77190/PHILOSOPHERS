@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 23:30:50 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:56:54 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define ERROR 1
 # define DIED 2
 # define SATIATE 3
+# define STOP 4
 
 //////////////////////////////////////////////////////////////////
 //                          STRUCT		                       //
@@ -38,12 +39,16 @@
 typedef struct s_philo
 {
 	pthread_t		tid;
-	unsigned long	id;
+	unsigned int	id;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
-	long			last_meal_time;
-	long			count_eat;
-	struct s_time	*time;
+	unsigned int	last_meal_time;
+	unsigned int	count_eat;
+	unsigned int	limit_meal;
+	unsigned int	time_to_die;
+	unsigned int	time_to_eat;
+	unsigned int	time_to_sleep;
+	bool			optionnal;
 	struct s_sync	*sync;
 	struct s_philo	*next;
 	struct s_philo	*prev;
@@ -59,10 +64,10 @@ typedef struct s_philoControl
 
 typedef struct s_time
 {
-	long			time_to_die;
-	long			time_to_eat;
-	long			time_to_sleep;
-	long			n_of_time_eat;
+	unsigned int			time_to_die;
+	unsigned int			time_to_eat;
+	unsigned int			time_to_sleep;
+	unsigned int			n_of_time_eat;
 }					t_time;
 
 typedef struct s_fork
@@ -76,10 +81,9 @@ typedef struct s_sync
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	write_lock;
 	pthread_mutex_t	meal_lock;
-	long			count_all_eat;
+	pthread_mutex_t	start_lock;
 	bool			optionnal;
 	bool			dead;
-	bool			stop_monitor;
 }					t_sync;
 
 typedef struct s_monitor
@@ -114,7 +118,7 @@ int					sequential_thread_launch(t_data *param, t_philo *current);
 
 //////////////////////////////////////////////////////////////////
 //                          MONITOR		                       //
-////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////unsigned//////////////////
 
 void				*monitor(void *arg);
 int					check_philosopher_dead(t_philo *philo, long current_time,
@@ -127,14 +131,14 @@ int					check_global_satiate(t_data *param);
 //                          ROUTINE		                       //
 ////////////////////////////////////////////////////////////////
 
-void				*routine_a(void *arg);
-void				*routine_b(void *arg);
+void				*routine(void *arg);
+int					*routine_left_handed(void *arg);
+int					*routine_rigt_handed(void *arg);
 int					philo_take_fork_a(t_philo *philo);
 int					philo_take_fork_b(t_philo *philo);
 int					philo_eat_a(t_philo *philo);
 int					philo_eat_b(t_philo *philo);
 int					philo_sleep(t_philo *philo);
-// void			exit_routine(t_philo *philo);
 int					print_fork(t_philo *philo);
 int					print_eat(t_philo *philo);
 int					print_sleep(t_philo *philo);

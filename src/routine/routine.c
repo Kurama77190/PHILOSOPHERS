@@ -14,60 +14,71 @@
 
 void	only_one(t_philo *philo);
 
-void	*routine_a(void *arg)
+void	*routine(void *arg)
 {
-	t_philo	*philo;
+	t_philo *philo;
 
+	pthread_mutex_lock(&philo->sync->start_lock);
+	pthread_mutex_unlock(&philo->sync->start_lock);
 	philo = (t_philo *)arg;
 	while (1)
 	{
-		if (philo->next == philo)
+		if (philo->id % 2 != 0)
 		{
-			only_one(philo);
-			return (NULL);
+			if (routine_left_handed(philo) == STOP)
+				break ;
 		}
-		if (philo_take_fork_a(philo) == DIED)
+		else
 		{
-			return (NULL);
-		}
-		if (philo_eat_a(philo) == DIED)
-		{
-			return (NULL);
-		}
-		if (philo_sleep(philo) == DIED)
-		{
-			return (NULL);
+			if (routine_right_handed(philo) == STOP)
+				break ;
 		}
 	}
 	return (NULL);
 }
 
-void	*routine_b(void *arg)
+int	routine_left_handed(t_philo *philo)
 {
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	while (1)
+	if (philo->next == philo)
 	{
-		if (philo->next == philo)
-		{
-			only_one(philo);
-			return (NULL);
-		}
-		if (philo_take_fork_b(philo) == DIED)
-		{
-			return (NULL);
-		}
-		if (philo_eat_b(philo) == DIED)
-		{
-			return (NULL);
-		}
-		if (philo_sleep(philo) == DIED)
-		{
-			return (NULL);
-		}
+		only_one(philo);
+		return (STOP);
 	}
-	return (NULL);
+	if (philo_take_fork_a(philo) == DIED)
+	{
+		return (STOP);
+	}
+	if (philo_eat_a(philo) == DIED)
+	{
+		return (STOP);
+	}
+	if (philo_sleep(philo) == DIED)
+	{
+		return (STOP);
+	}
+	return (SUCCESS);
+}
+
+int	routine_right_handed(t_philo *philo)
+{
+	if (philo->next == philo)
+	{
+		only_one(philo);
+		return (STOP);
+	}
+	if (philo_take_fork_b(philo) == DIED)
+	{
+		return (STOP);
+	}
+	if (philo_eat_b(philo) == DIED)
+	{
+		return (STOP);
+	}
+	if (philo_sleep(philo) == DIED)
+	{
+		return (STOP);
+	}
+	return (SUCCESS);
 }
 
 void	only_one(t_philo *philo)

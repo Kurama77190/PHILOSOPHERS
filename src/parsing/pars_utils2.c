@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:57:27 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 23:39:35 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/26 19:51:53 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,11 @@ int	create_philo(t_data *param)
 	current = param->thread.head;
 	if (sequential_thread_launch(param, current) == ERROR)
 	{
-		pthread_mutex_lock(&param->sync.dead_lock);
-		param->sync.dead = true;
-		param->sync.stop_monitor = true;
-		pthread_mutex_unlock(&param->sync.dead_lock);
 		return (ERROR);
 	}
 	if (pthread_create(&param->monitor.monitor_thread, NULL, &monitor,
 			param) != 0)
 	{
-		pthread_mutex_lock(&param->sync.dead_lock);
-		param->sync.dead = true;
-		param->sync.stop_monitor = true;
-		pthread_mutex_unlock(&param->sync.dead_lock);
 		return (ERROR);
 	}
 	return (SUCCESS);
@@ -42,25 +34,26 @@ int	sequential_thread_launch(t_data *param, t_philo *current)
 	int	i;
 
 	i = 0;
+	pthread_mutex_lock(&param->sync.start_lock);
 	while (i < param->thread.size)
 	{
 		if (i % 2 == 0)
 		{
-			if (pthread_create(&current->tid, NULL, &routine_a, current) != 0)
+			if (pthread_create(&current->tid, NULL, &routine, current) != 0)
 				return (ERROR);
 		}
 		else
 		{
-			if (pthread_create(&current->tid, NULL, &routine_b, current) != 0)
+			if (pthread_create(&current->tid, NULL, &routine, current) != 0)
 				return (ERROR);
 		}
 		if (current->next == current)
 			return (SUCCESS);
 		i++;
 		current = current->next;
-		usleep(1000);
 	}
-	return (SUCCESS);
+	pthread_mutex_unlock(&param->sync.start_lock);
+		return (SUCCESS);
 }
 
 int	init_mutex_thread(t_data *param, size_t nb_fork)
@@ -94,7 +87,12 @@ int	init_mutex_routine(t_data *param)
 	}
 	if (pthread_mutex_init(&param->sync.dead_lock, NULL) != 0)
 	{
-		ft_putstr_fd("Error initializing mutex write.\n", 2);
+		ft_putstr_fd("Error initializing mutex dead.\n", 2);
+		return (ERROR);
+	}
+	if (pthread_mutex_init(&param->sync.start_lock, NULL) != 0)
+	{
+		ft_putstr_fd("Error initializing mutex start.\n", 2);
 		return (ERROR);
 	}
 	return (SUCCESS);
