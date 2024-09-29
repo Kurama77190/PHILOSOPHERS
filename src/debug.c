@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:05:52 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 18:08:04 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:51:11 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	check_philosophers(t_philo *head, int num_philos)
 	// Parcourir la liste circulaire et afficher les informations
 	do
 	{
-		printf("Philosophe %lu :\n", current->id);
+		printf("Philosophe %u :\n", current->id);
 		printf("  Adresse : %p\n", (void *)current);
 		printf("  Fourchette gauche (left)  : %p\n", (void *)current->left);
 		printf("  Fourchette droite (right) : %p\n", (void *)current->right);

@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:57:27 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/26 19:51:53 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/29 18:29:58 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,17 @@ int	sequential_thread_launch(t_data *param, t_philo *current)
 	int	i;
 
 	i = 0;
-	pthread_mutex_lock(&param->sync.start_lock);
 	while (i < param->thread.size)
 	{
-		if (i % 2 == 0)
-		{
-			if (pthread_create(&current->tid, NULL, &routine, current) != 0)
+		if (pthread_create(&current->tid, NULL, &routine, current) != 0)
 				return (ERROR);
-		}
-		else
-		{
-			if (pthread_create(&current->tid, NULL, &routine, current) != 0)
-				return (ERROR);
-		}
 		if (current->next == current)
 			return (SUCCESS);
 		i++;
 		current = current->next;
+		usleep(10);
 	}
-	pthread_mutex_unlock(&param->sync.start_lock);
-		return (SUCCESS);
+	return (SUCCESS);
 }
 
 int	init_mutex_thread(t_data *param, size_t nb_fork)
@@ -75,7 +66,7 @@ int	init_mutex_thread(t_data *param, size_t nb_fork)
 
 int	init_mutex_routine(t_data *param)
 {
-	if (pthread_mutex_init(&param->sync.meal_lock, NULL) != 0)
+	if (pthread_mutex_init(&param->sync.time_lock, NULL) != 0)
 	{
 		ft_putstr_fd("Error initializing mutex meal.\n", 2);
 		return (ERROR);
@@ -93,6 +84,11 @@ int	init_mutex_routine(t_data *param)
 	if (pthread_mutex_init(&param->sync.start_lock, NULL) != 0)
 	{
 		ft_putstr_fd("Error initializing mutex start.\n", 2);
+		return (ERROR);
+	}
+	if (pthread_mutex_init(&param->sync.meal_lock, NULL) != 0)
+	{
+		ft_putstr_fd("Error initializing mutex meal.\n", 2);
 		return (ERROR);
 	}
 	return (SUCCESS);

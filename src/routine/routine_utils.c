@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 16:22:17 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/26 18:38:29 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/29 19:06:28 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,16 @@
 int	philo_take_fork_a(t_philo *philo)
 {
 	if (philo->optionnal)
+		if (check_optionnal_satiate(philo) == SATIATE)
+			return (SATIATE);
+	if (check_dead(philo) == DIED)
+		return (DIED);
+	pthread_mutex_lock(philo->left);
+	if (print_fork(philo) == DIED)
 	{
-		if (philo->count_eat == philo->limit_meal)
-			return (DIED);
-	}
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
-	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
+		pthread_mutex_unlock(philo->left);
 		return (DIED);
 	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
-	pthread_mutex_lock(philo->left);
 	pthread_mutex_lock(philo->right);
 	if (print_fork(philo) == DIED)
 	{
@@ -40,18 +38,16 @@ int	philo_take_fork_a(t_philo *philo)
 int	philo_take_fork_b(t_philo *philo)
 {
 	if (philo->optionnal)
+		if (check_optionnal_satiate(philo) == SATIATE)
+			return (SATIATE);
+	if (check_dead(philo) == DIED)
+		return (DIED);
+	pthread_mutex_lock(philo->right);
+	if (print_fork(philo) == DIED)
 	{
-		if (philo->count_eat == philo->limit_meal)
-			return (DIED);
-	}
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
-	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
+		pthread_mutex_unlock(philo->right);
 		return (DIED);
 	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
-	pthread_mutex_lock(philo->right);
 	pthread_mutex_lock(philo->left);
 	if (print_fork(philo) == DIED)
 	{
@@ -64,6 +60,11 @@ int	philo_take_fork_b(t_philo *philo)
 
 int	philo_eat_a(t_philo *philo)
 {
+	if (philo->optionnal)
+	{
+		if (philo->count_eat == philo->limit_meal)
+			return (SATIATE);
+	}
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	if (philo->sync->dead)
 	{
@@ -86,6 +87,11 @@ int	philo_eat_a(t_philo *philo)
 
 int	philo_eat_b(t_philo *philo)
 {
+	if (philo->optionnal)
+	{
+		if (philo->count_eat == philo->limit_meal)
+			return (SATIATE);
+	}
 	pthread_mutex_lock(&philo->sync->dead_lock);
 	if (philo->sync->dead)
 	{
@@ -120,8 +126,6 @@ int	philo_sleep(t_philo *philo)
 		return (DIED);
 	}
 	if (print_think(philo) == DIED)
-	{
 		return (DIED);
-	}
 	return (SUCCESS);
 }

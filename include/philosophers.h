@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 16:34:41 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/26 19:56:54 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/29 18:59:02 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_philo
 	unsigned int	time_to_eat;
 	unsigned int	time_to_sleep;
 	bool			optionnal;
+	bool			only_one;
 	struct s_sync	*sync;
 	struct s_philo	*next;
 	struct s_philo	*prev;
@@ -80,10 +81,15 @@ typedef struct s_sync
 {
 	pthread_mutex_t	dead_lock;
 	pthread_mutex_t	write_lock;
-	pthread_mutex_t	meal_lock;
+	pthread_mutex_t	time_lock;
 	pthread_mutex_t	start_lock;
+	pthread_mutex_t	meal_lock;
+	size_t			count_all_meal;
 	bool			optionnal;
 	bool			dead;
+	bool			only_one;
+	bool			stop_routine;
+	bool			stop_monitor;
 }					t_sync;
 
 typedef struct s_monitor
@@ -121,19 +127,16 @@ int					sequential_thread_launch(t_data *param, t_philo *current);
 //////////////////////////////////////////////unsigned//////////////////
 
 void				*monitor(void *arg);
-int					check_philosopher_dead(t_philo *philo, long current_time,
-						t_data *param);
-int					check_global_death(t_data *param);
-int					monitor_philosophers(t_data *param);
-int					check_global_satiate(t_data *param);
+int					monitor_philosophers(t_philo *current, t_data *param);
+int					check_optionnal_terminated(t_data *param);
 
 //////////////////////////////////////////////////////////////////
 //                          ROUTINE		                       //
 ////////////////////////////////////////////////////////////////
 
 void				*routine(void *arg);
-int					*routine_left_handed(void *arg);
-int					*routine_rigt_handed(void *arg);
+int					routine_left_handed(t_philo *arg);
+int					routine_right_handed(t_philo *arg);
 int					philo_take_fork_a(t_philo *philo);
 int					philo_take_fork_b(t_philo *philo);
 int					philo_eat_a(t_philo *philo);
@@ -144,6 +147,8 @@ int					print_eat(t_philo *philo);
 int					print_sleep(t_philo *philo);
 int					print_think(t_philo *philo);
 int					print_die(t_philo *philo);
+int					check_optionnal_satiate(t_philo *philo);
+int					check_dead(t_philo *philo);
 
 //////////////////////////////////////////////////////////////////
 //                          UTILS		                       //
@@ -161,7 +166,8 @@ bool				ft_is_digit(char *split);
 void				end_prog(t_data *param, char *stderr, int exit_code);
 void				*ft_memset(void *b, int c, size_t len);
 void				free_s_fork(t_fork *param);
-long int			get_ms(void);
+long int			get_ms(t_philo *param);
+void				ft_usleep(t_philo *param, unsigned int time_in_ms);
 
 //////////////////////////////////////////////////////////////////
 //                          DEBUG		                       //

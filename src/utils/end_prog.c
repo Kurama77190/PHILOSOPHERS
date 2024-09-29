@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 05:34:33 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/23 23:56:13 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/29 17:39:17 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	free_s_sync(t_sync *param);
 
 void	end_prog(t_data *param, char *stderr, int exit_code)
 {
+	
 	if (param->monitor.monitor_thread != 0)
 		free_s_monitor(&param->monitor);
 	if (param->thread.head != NULL)
@@ -31,38 +32,26 @@ void	free_s_monitor(t_monitor *param)
 {
 	if (param->monitor_thread == 0)
 		return ;
-	if (param->monitor_thread != 0)
+	if (pthread_join(param->monitor_thread, NULL) != 0)
 	{
-		if (pthread_join(param->monitor_thread, NULL) != 0)
-		{
-			perror("Error joining thread");
-		}
+		perror("Error joining thread");
 	}
 	return ;
 }
 
 void	free_s_sync(t_sync *param)
 {
-	if (&param->dead_lock != 0)
+	if (pthread_mutex_destroy(&param->dead_lock) != 0)
 	{
-		if (pthread_mutex_destroy(&param->dead_lock) != 0)
-		{
-			perror("Error destroying sync mutex dead_lock");
-		}
+		perror("Error destroying sync mutex dead_lock");
 	}
-	if (&param->write_lock != 0)
+	if (pthread_mutex_destroy(&param->write_lock) != 0)
 	{
-		if (pthread_mutex_destroy(&param->write_lock) != 0)
-		{
-			perror("Error destroying sync mutex write_lock");
-		}
+		perror("Error destroying sync mutex write_lock");
 	}
-	if (&param->meal_lock != 0)
+	if (pthread_mutex_destroy(&param->meal_lock) != 0)
 	{
-		if (pthread_mutex_destroy(&param->meal_lock) != 0)
-		{
-			perror("Error destroying sync mutex meal_lock");
-		}
+		perror("Error destroying sync mutex meal_lock");
 	}
 	return ;
 }

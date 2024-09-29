@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 00:53:16 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/26 19:58:58 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/29 19:29:19 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,102 +14,76 @@
 
 int	print_fork(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
-	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
+	unsigned long timestamp;
+
+	if (check_dead(philo) == DIED)
 		return (DIED);
-	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
+	timestamp = get_ms(philo);
 	pthread_mutex_lock(&philo->sync->write_lock);
-	printf("%lu %lu has taken a fork\n", get_ms(), philo->id);
+	printf("%lu %u has taken a fork\n", timestamp, philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
-	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
+	if (check_dead(philo) == DIED)
 		return (DIED);
-	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
 	return (SUCCESS);
 }
 
 int	print_eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
-	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
+	unsigned long	timestamp;
+
+	if (check_dead(philo) == DIED)
 		return (DIED);
-	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
+	timestamp = get_ms(philo);
 	pthread_mutex_lock(&philo->sync->write_lock);
-	printf("%lu %lu is eating\n", get_ms(), philo->id);
-	pthread_mutex_lock(&philo->sync->meal_lock);
-	philo->last_meal_time = get_ms();
-	pthread_mutex_unlock(&philo->sync->meal_lock);
+	printf("%lu %u is eating\n", timestamp, philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
+	pthread_mutex_lock(&philo->sync->meal_lock);
+	philo->last_meal_time = timestamp;
 	philo->count_eat++;
-	usleep(philo->time_to_die);
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
-	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
-		return (DIED);
-	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
+	philo->sync->count_all_meal++;
+	pthread_mutex_unlock(&philo->sync->meal_lock);
+	ft_usleep(philo, philo->time_to_eat);
 	return (SUCCESS);
 }
 
 int	print_sleep(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
-	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
+	unsigned long	timestamp;
+
+	if (check_dead(philo) == DIED)
 		return (DIED);
-	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
+	timestamp = get_ms(philo);
 	pthread_mutex_lock(&philo->sync->write_lock);
-	printf("%lu %lu is sleeping\n", get_ms(), philo->id);
+	printf("%lu %u is sleeping\n", timestamp, philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
-	usleep(philo->time_to_sleep);
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
-	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
-		return (DIED);
-	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
+	ft_usleep(philo, philo->time_to_sleep);
 	return (SUCCESS);
 }
 
 int	print_think(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
-	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
+	unsigned long	timestamp;
+
+	if (check_dead(philo) == DIED)
 		return (DIED);
-	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
+	timestamp = get_ms(philo);
 	pthread_mutex_lock(&philo->sync->write_lock);
-	printf("%lu %lu is thinking\n", get_ms(), philo->id);
+	printf("%lu %u is thinking\n", timestamp, philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
-	pthread_mutex_lock(&philo->sync->dead_lock);
-	if (philo->sync->dead)
-	{
-		pthread_mutex_unlock(&philo->sync->dead_lock);
-		return (DIED);
-	}
-	pthread_mutex_unlock(&philo->sync->dead_lock);
+	usleep(1000);
 	return (SUCCESS);
 }
 
 int	print_die(t_philo *philo)
 {
+	unsigned long	timestamp;
+
+	
+	timestamp = get_ms(philo);
 	pthread_mutex_lock(&philo->sync->write_lock);
-	printf("%lu %lu died\n", get_ms(), philo->id);
+	// printf("last time to eat = %u\n", philo->last_meal_time);
+	// printf("time to die = %u\n", philo->time_to_die);
+	printf("%lu %u died\n", timestamp, philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
 	return (SUCCESS);
 }

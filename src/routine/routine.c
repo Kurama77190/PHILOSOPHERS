@@ -18,19 +18,19 @@ void	*routine(void *arg)
 {
 	t_philo *philo;
 
-	pthread_mutex_lock(&philo->sync->start_lock);
-	pthread_mutex_unlock(&philo->sync->start_lock);
+	philo = arg;
+
 	philo = (t_philo *)arg;
 	while (1)
 	{
 		if (philo->id % 2 != 0)
 		{
-			if (routine_left_handed(philo) == STOP)
+			if (routine_right_handed(philo) == STOP)
 				break ;
 		}
 		else
 		{
-			if (routine_right_handed(philo) == STOP)
+			if (routine_left_handed(philo) == STOP)
 				break ;
 		}
 	}
@@ -39,51 +39,55 @@ void	*routine(void *arg)
 
 int	routine_left_handed(t_philo *philo)
 {
-	if (philo->next == philo)
+	if (philo->only_one)
 	{
 		only_one(philo);
 		return (STOP);
 	}
 	if (philo_take_fork_a(philo) == DIED)
-	{
 		return (STOP);
-	}
 	if (philo_eat_a(philo) == DIED)
-	{
 		return (STOP);
-	}
 	if (philo_sleep(philo) == DIED)
+		return (STOP);
+	pthread_mutex_lock(&philo->sync->start_lock);
+	if (philo->sync->stop_routine)  // je stop le monitor quand ils sont satiate !
 	{
+		pthread_mutex_unlock(&philo->sync->start_lock);
 		return (STOP);
 	}
+	pthread_mutex_unlock(&philo->sync->start_lock);
+	// peut etre un usleep ici :).
 	return (SUCCESS);
 }
 
 int	routine_right_handed(t_philo *philo)
 {
-	if (philo->next == philo)
+	if (philo->only_one)
 	{
 		only_one(philo);
 		return (STOP);
 	}
 	if (philo_take_fork_b(philo) == DIED)
-	{
 		return (STOP);
-	}
 	if (philo_eat_b(philo) == DIED)
-	{
 		return (STOP);
-	}
 	if (philo_sleep(philo) == DIED)
+		return (STOP);
+	pthread_mutex_lock(&philo->sync->start_lock);
+	if (philo->sync->stop_routine)
 	{
+		pthread_mutex_unlock(&philo->sync->start_lock);
 		return (STOP);
 	}
+	pthread_mutex_unlock(&philo->sync->start_lock);
 	return (SUCCESS);
 }
 
 void	only_one(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left);
-	printf("%lu %lu has taken a fork\n", get_ms(), philo->id);
-	pthread_mutex_unlock(philo->left);
+	pthread_mutex_lock(&philo->sync->write_lock);
+	printf("%lu %u has taken a fork\n", get_ms(philo), philo->id);
+	pthread_mutex_unlock(&philo->sync->write_lock);
+	print_die(philo);
 }
