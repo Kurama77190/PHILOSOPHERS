@@ -25,12 +25,16 @@ void	*routine(void *arg)
 		if (philo->id % 2 != 0)
 		{
 			if (routine_right_handed(philo) == STOP)
+			{
 				break ;
+			}
 		}
 		else
 		{
 			if (routine_left_handed(philo) == STOP)
+			{
 				break ;
+			}
 		}
 	}
 	return (NULL);

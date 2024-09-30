@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 00:53:16 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/30 16:55:25 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/30 19:19:26 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	print_fork(t_philo *philo)
 
 	if (check_dead(philo) == DIED)
 		return (DIED);
-	pthread_mutex_lock(&philo->sync->write_lock);
 	timestamp = get_ms(philo);
+	pthread_mutex_lock(&philo->sync->write_lock);
 	printf("%lu %u has taken a fork\n", timestamp, philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
 	if (check_dead(philo) == DIED)
@@ -33,8 +33,8 @@ int	print_eat(t_philo *philo)
 
 	if (check_dead(philo) == DIED)
 		return (DIED);
-	pthread_mutex_lock(&philo->sync->write_lock);
 	timestamp = get_ms(philo);
+	pthread_mutex_lock(&philo->sync->write_lock);
 	printf("%lu %u is eating\n", timestamp, philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
 	pthread_mutex_lock(&philo->sync->meal_lock);
@@ -52,8 +52,8 @@ int	print_sleep(t_philo *philo)
 
 	if (check_dead(philo) == DIED)
 		return (DIED);
-	pthread_mutex_lock(&philo->sync->write_lock);
 	timestamp = get_ms(philo);
+	pthread_mutex_lock(&philo->sync->write_lock);
 	printf("%lu %u is sleeping\n", timestamp, philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
 	ft_usleep(philo, philo->time_to_sleep);
@@ -66,8 +66,8 @@ int	print_think(t_philo *philo)
 
 	if (check_dead(philo) == DIED)
 		return (DIED);
-	pthread_mutex_lock(&philo->sync->write_lock);
 	timestamp = get_ms(philo);
+	pthread_mutex_lock(&philo->sync->write_lock);
 	printf("%lu %u is thinking\n", timestamp, philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
 	usleep(1000);
@@ -78,8 +78,8 @@ int	print_die(t_philo *philo)
 {
 	unsigned long	timestamp;
 
-	pthread_mutex_lock(&philo->sync->write_lock);
 	timestamp = get_ms(philo);
+	pthread_mutex_lock(&philo->sync->write_lock);
 	printf("%lu %u died\n", timestamp, philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
 	return (SUCCESS);
