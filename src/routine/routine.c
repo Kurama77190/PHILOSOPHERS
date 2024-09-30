@@ -89,5 +89,6 @@ void	only_one(t_philo *philo)
 	pthread_mutex_lock(&philo->sync->write_lock);
 	printf("%lu %u has taken a fork\n", get_ms(philo), philo->id);
 	pthread_mutex_unlock(&philo->sync->write_lock);
+	usleep(philo->time_to_die * 1000);
 	print_die(philo);
 }
