@@ -16,10 +16,9 @@ void	only_one(t_philo *philo);
 
 void	*routine(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = arg;
-
 	philo = (t_philo *)arg;
 	while (1)
 	{
@@ -51,13 +50,12 @@ int	routine_left_handed(t_philo *philo)
 	if (philo_sleep(philo) == DIED)
 		return (STOP);
 	pthread_mutex_lock(&philo->sync->start_lock);
-	if (philo->sync->stop_routine)  // je stop le monitor quand ils sont satiate !
+	if (philo->sync->stop_routine)
 	{
 		pthread_mutex_unlock(&philo->sync->start_lock);
 		return (STOP);
 	}
 	pthread_mutex_unlock(&philo->sync->start_lock);
-	// peut etre un usleep ici :).
 	return (SUCCESS);
 }
 

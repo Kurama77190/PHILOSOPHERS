@@ -6,7 +6,7 @@
 #    By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/12 16:20:32 by sben-tay          #+#    #+#              #
-#    Updated: 2024/09/29 18:10:40 by sben-tay         ###   ########.fr        #
+#    Updated: 2024/09/30 16:56:32 by sben-tay         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ BUILD = builder/
 # CFLAGS += -fsanitize=thread
 
 #=================================================__SRC__OF__PROJECT__=============================================================================
-SRC = src/main.c src/debug.c \
+SRC = src/main.c \
 	$(addprefix $(PARS), parsing.c pars_utils.c pars_utils2.c ) \
 	$(addprefix $(ROUTINE), routine.c routine_utils.c routine_utils2.c routine_utils3.c ) \
 	$(addprefix $(MONITOR), monitor.c monitor_utils.c ) \

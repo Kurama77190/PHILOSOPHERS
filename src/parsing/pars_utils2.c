@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/20 18:57:27 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/29 18:29:58 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/30 16:58:00 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	sequential_thread_launch(t_data *param, t_philo *current)
 	while (i < param->thread.size)
 	{
 		if (pthread_create(&current->tid, NULL, &routine, current) != 0)
-				return (ERROR);
+			return (ERROR);
 		if (current->next == current)
 			return (SUCCESS);
 		i++;
@@ -68,28 +68,23 @@ int	init_mutex_routine(t_data *param)
 {
 	if (pthread_mutex_init(&param->sync.time_lock, NULL) != 0)
 	{
-		ft_putstr_fd("Error initializing mutex meal.\n", 2);
-		return (ERROR);
+		return (ft_putstr_fd("Error initializing mutex meal.\n", 2), ERROR);
 	}
 	if (pthread_mutex_init(&param->sync.write_lock, NULL) != 0)
 	{
-		ft_putstr_fd("Error initializing mutex write.\n", 2);
-		return (ERROR);
+		return (ft_putstr_fd("Error initializing mutex write.\n", 2), ERROR);
 	}
 	if (pthread_mutex_init(&param->sync.dead_lock, NULL) != 0)
 	{
-		ft_putstr_fd("Error initializing mutex dead.\n", 2);
-		return (ERROR);
+		return (ft_putstr_fd("Error initializing mutex dead.\n", 2), ERROR);
 	}
 	if (pthread_mutex_init(&param->sync.start_lock, NULL) != 0)
 	{
-		ft_putstr_fd("Error initializing mutex start.\n", 2);
-		return (ERROR);
+		return (ft_putstr_fd("Error initializing mutex start.\n", 2), ERROR);
 	}
 	if (pthread_mutex_init(&param->sync.meal_lock, NULL) != 0)
 	{
-		ft_putstr_fd("Error initializing mutex meal.\n", 2);
-		return (ERROR);
+		return (ft_putstr_fd("Error initializing mutex meal.\n", 2), ERROR);
 	}
 	return (SUCCESS);
 }
