@@ -6,7 +6,7 @@
 /*   By: sben-tay <sben-tay@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 18:02:07 by sben-tay          #+#    #+#             */
-/*   Updated: 2024/09/29 18:43:06 by sben-tay         ###   ########.fr       */
+/*   Updated: 2024/09/30 15:44:39 by sben-tay         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	*monitor(void *arg)
 	t_philo	*current;
 
 	param = (t_data *)arg;
+	current = param->thread.head;
 	while (1)
 	{
-		current = param->thread.head;
 		if (monitor_philosophers(current, param) == DIED)
 		{
 			break ;
@@ -32,7 +32,7 @@ void	*monitor(void *arg)
 			pthread_mutex_unlock(&current->sync->start_lock);
 			break ;
 		}
-		usleep(100);
+		current = current->next;
 	}
 	return (NULL);
 }
